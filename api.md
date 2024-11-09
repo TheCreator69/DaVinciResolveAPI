@@ -1,3 +1,5 @@
+theme: jekyll-theme-cayman
+
 Last Updated: 3 October 2024
 ----------------------------
 In this package, you will find a brief introduction to the Scripting API for DaVinci Resolve Studio. Apart from this README.txt file, this package contains folders containing the basic import
