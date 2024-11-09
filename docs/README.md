@@ -91,29 +91,30 @@ DaVinci Resolve API
 Some commonly used API functions are described below (*). As with the resolve object, each object is inspectable for properties and functions.
 
 ### Resolve
+
 | Method | Return Type | Comment |
 | ------ | ----------- | ------- |
-| Fusion()                                        | Fusion             | Returns the Fusion object. Starting point for Fusion scripts. |
-| GetMediaStorage()                               | MediaStorage       | Returns the media storage object to query and act on media locations. |
-| GetProjectManager()                             | ProjectManager     | Returns the project manager object for currently open database. |
-| OpenPage(pageName)                              | Bool               | Switches to indicated page in DaVinci Resolve. Input can be one of ("media", "cut", "edit", "fusion", "color", "fairlight", "deliver"). |
-| GetCurrentPage()                                | String             | Returns the page currently displayed in the main window. Returned value can be one of ("media", "cut", "edit", "fusion", "color", "fairlight", "deliver", None). |
-| GetProductName()                                | string             | Returns product name. |
-| GetVersion()                                    | [version field|]   # Returns list of product version fields in [major, minor, patch, build, suffix] format. |
-| GetVersionString()                              | string             | Returns product version in "major.minor.patch[suffix].build" format. |
-| LoadLayoutPreset(presetName)                    | Bool               | Loads UI layout from saved preset named 'presetName'. |
-| UpdateLayoutPreset(presetName)                  | Bool               | Overwrites preset named 'presetName' with current UI layout. |
-| ExportLayoutPreset(presetName, presetFilePath)  | Bool               | Exports preset named 'presetName' to path 'presetFilePath'. |
-| DeleteLayoutPreset(presetName)                  | Bool               | Deletes preset named 'presetName'. |
-| SaveLayoutPreset(presetName)                    | Bool               | Saves current UI layout as a preset named 'presetName'. |
-| ImportLayoutPreset(presetFilePath, presetName)  | Bool               | Imports preset from path 'presetFilePath'. The optional argument 'presetName' specifies how the preset shall be named. If not specified, the preset is named based on the filename. |
-| Quit()                                          | None               | Quits the Resolve App. |
-| ImportRenderPreset(presetPath)                  | Bool               | Import a preset from presetPath (string) and set it as current preset for rendering. |
-| ExportRenderPreset(presetName, exportPath)      | Bool               | Export a preset to a given path (string) if presetName(string) exists. |
-| ImportBurnInPreset(presetPath)                  | Bool               | Import a data burn in preset from a given presetPath (string). |
-| ExportBurnInPreset(presetName, exportPath)      | Bool               | Export a data burn in preset to a given path (string) if presetName (string) exists. |
-| GetKeyframeMode()                               | keyframeMode       | Returns the currently set keyframe mode (int). Refer to section 'Keyframe Mode information' below for details. |
-| SetKeyframeMode(keyframeMode)                   | Bool               | Returns True when 'keyframeMode'(enum) is successfully set. Refer to section 'Keyframe Mode information' below for details. |
+| `Fusion()`                                        | Fusion             | Returns the Fusion object. Starting point for Fusion scripts. |
+| `GetMediaStorage()`                               | MediaStorage       | Returns the media storage object to query and act on media locations. |
+| `GetProjectManager()`                             | ProjectManager     | Returns the project manager object for currently open database. |
+| `OpenPage(pageName)`                              | Bool               | Switches to indicated page in DaVinci Resolve. Input can be one of ("media", "cut", "edit", "fusion", "color", "fairlight", "deliver"). |
+| `GetCurrentPage()`                                | String             | Returns the page currently displayed in the main window. Returned value can be one of ("media", "cut", "edit", "fusion", "color", "fairlight", "deliver", None). |
+| `GetProductName()`                                | string             | Returns product name. |
+| `GetVersion()`                                    | [version field|]   # Returns list of product version fields in [major, minor, patch, build, suffix] format. |
+| `GetVersionString()`                              | string             | Returns product version in "major.minor.patch[suffix].build" format. |
+| `LoadLayoutPreset(presetName)`                    | Bool               | Loads UI layout from saved preset named 'presetName'. |
+| `UpdateLayoutPreset(presetName)`                  | Bool               | Overwrites preset named 'presetName' with current UI layout. |
+| `ExportLayoutPreset(presetName, presetFilePath)`  | Bool               | Exports preset named 'presetName' to path 'presetFilePath'. |
+| `DeleteLayoutPreset(presetName)`                  | Bool               | Deletes preset named 'presetName'. |
+| `SaveLayoutPreset(presetName)`                    | Bool               | Saves current UI layout as a preset named 'presetName'. |
+| `ImportLayoutPreset(presetFilePath, presetName)`  | Bool               | Imports preset from path 'presetFilePath'. The optional argument 'presetName' specifies how the preset shall be named. If not specified, the preset is named based on the filename. |
+| `Quit()`                                          | None               | Quits the Resolve App. |
+| `ImportRenderPreset(presetPath)`                  | Bool               | Import a preset from presetPath (string) and set it as current preset for rendering. |
+| `ExportRenderPreset(presetName, exportPath)`      | Bool               | Export a preset to a given path (string) if presetName(string) exists. |
+| `ImportBurnInPreset(presetPath)`                  | Bool               | Import a data burn in preset from a given presetPath (string). |
+| `ExportBurnInPreset(presetName, exportPath)`      | Bool               | Export a data burn in preset to a given path (string) if presetName (string) exists. |
+| `GetKeyframeMode()`                               | keyframeMode       | Returns the currently set keyframe mode (int). Refer to section 'Keyframe Mode information' below for details. |
+| `SetKeyframeMode(keyframeMode)`                   | Bool               | Returns True when 'keyframeMode'(enum) is successfully set. Refer to section 'Keyframe Mode information' below for details. |
 
 ### ProjectManager
   ArchiveProject(projectName,
