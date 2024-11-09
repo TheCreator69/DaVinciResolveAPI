@@ -94,274 +94,304 @@ Some commonly used API functions are described below (*). As with the resolve ob
 
 | Method | Return Type | Comment |
 | ------ | ----------- | ------- |
-| `Fusion()`                                        | Fusion             | Returns the Fusion object. Starting point for Fusion scripts. |
-| `GetMediaStorage()`                               | MediaStorage       | Returns the media storage object to query and act on media locations. |
-| `GetProjectManager()`                             | ProjectManager     | Returns the project manager object for currently open database. |
-| `OpenPage(pageName)`                              | Bool               | Switches to indicated page in DaVinci Resolve. Input can be one of ("media", "cut", "edit", "fusion", "color", "fairlight", "deliver"). |
-| `GetCurrentPage()`                                | String             | Returns the page currently displayed in the main window. Returned value can be one of ("media", "cut", "edit", "fusion", "color", "fairlight", "deliver", None). |
-| `GetProductName()`                                | string             | Returns product name. |
-| `GetVersion()`                                    | [version field|]   # Returns list of product version fields in [major, minor, patch, build, suffix] format. |
-| `GetVersionString()`                              | string             | Returns product version in "major.minor.patch[suffix].build" format. |
-| `LoadLayoutPreset(presetName)`                    | Bool               | Loads UI layout from saved preset named 'presetName'. |
-| `UpdateLayoutPreset(presetName)`                  | Bool               | Overwrites preset named 'presetName' with current UI layout. |
-| `ExportLayoutPreset(presetName, presetFilePath)`  | Bool               | Exports preset named 'presetName' to path 'presetFilePath'. |
-| `DeleteLayoutPreset(presetName)`                  | Bool               | Deletes preset named 'presetName'. |
-| `SaveLayoutPreset(presetName)`                    | Bool               | Saves current UI layout as a preset named 'presetName'. |
-| `ImportLayoutPreset(presetFilePath, presetName)`  | Bool               | Imports preset from path 'presetFilePath'. The optional argument 'presetName' specifies how the preset shall be named. If not specified, the preset is named based on the filename. |
-| `Quit()`                                          | None               | Quits the Resolve App. |
-| `ImportRenderPreset(presetPath)`                  | Bool               | Import a preset from presetPath (string) and set it as current preset for rendering. |
-| `ExportRenderPreset(presetName, exportPath)`      | Bool               | Export a preset to a given path (string) if presetName(string) exists. |
-| `ImportBurnInPreset(presetPath)`                  | Bool               | Import a data burn in preset from a given presetPath (string). |
-| `ExportBurnInPreset(presetName, exportPath)`      | Bool               | Export a data burn in preset to a given path (string) if presetName (string) exists. |
-| `GetKeyframeMode()`                               | keyframeMode       | Returns the currently set keyframe mode (int). Refer to section 'Keyframe Mode information' below for details. |
-| `SetKeyframeMode(keyframeMode)`                   | Bool               | Returns True when 'keyframeMode'(enum) is successfully set. Refer to section 'Keyframe Mode information' below for details. |
+| `Fusion()`                                        | `Fusion`             | Returns the Fusion object. Starting point for Fusion scripts. |
+| `GetMediaStorage()`                               | `MediaStorage`       | Returns the media storage object to query and act on media locations. |
+| `GetProjectManager()`                             | `ProjectManager`     | Returns the project manager object for currently open database. |
+| `OpenPage(pageName)`                              | `Bool`               | Switches to indicated page in DaVinci Resolve. Input can be one of ("media", "cut", "edit", "fusion", "color", "fairlight", "deliver"). |
+| `GetCurrentPage()`                                | `String`             | Returns the page currently displayed in the main window. Returned value can be one of ("media", "cut", "edit", "fusion", "color", "fairlight", "deliver", None). |
+| `GetProductName()`                                | `string`             | Returns product name. |
+| `GetVersion()`                                    | `[version field]`    | Returns list of product version fields in [major, minor, patch, build, suffix] format. |
+| `GetVersionString()`                              | `string`             | Returns product version in "major.minor.patch[suffix].build" format. |
+| `LoadLayoutPreset(presetName)`                    | `Bool`               | Loads UI layout from saved preset named 'presetName'. |
+| `UpdateLayoutPreset(presetName)`                  | `Bool`               | Overwrites preset named 'presetName' with current UI layout. |
+| `ExportLayoutPreset(presetName, presetFilePath)`  | `Bool`               | Exports preset named 'presetName' to path 'presetFilePath'. |
+| `DeleteLayoutPreset(presetName)`                  | `Bool`               | Deletes preset named 'presetName'. |
+| `SaveLayoutPreset(presetName)`                    | `Bool`               | Saves current UI layout as a preset named 'presetName'. |
+| `ImportLayoutPreset(presetFilePath, presetName)`  | `Bool`               | Imports preset from path 'presetFilePath'. The optional argument 'presetName' specifies how the preset shall be named. If not specified, the preset is named based on the filename. |
+| `Quit()`                                          | `None`               | Quits the Resolve App. |
+| `ImportRenderPreset(presetPath)`                  | `Bool`               | Import a preset from presetPath (string) and set it as current preset for rendering. |
+| `ExportRenderPreset(presetName, exportPath)`      | `Bool`               | Export a preset to a given path (string) if presetName(string) exists. |
+| `ImportBurnInPreset(presetPath)`                  | `Bool`               | Import a data burn in preset from a given presetPath (string). |
+| `ExportBurnInPreset(presetName, exportPath)`      | `Bool`               | Export a data burn in preset to a given path (string) if presetName (string) exists. |
+| `GetKeyframeMode()`                               | `keyframeMode`       | Returns the currently set keyframe mode (int). Refer to section 'Keyframe Mode information' below for details. |
+| `SetKeyframeMode(keyframeMode)`                   | `Bool`               | Returns True when 'keyframeMode'(enum) is successfully set. Refer to section 'Keyframe Mode information' below for details. |
 
 ### ProjectManager
-  ArchiveProject(projectName,
+
+| Method | Return Type | Comment |
+| ------ | ----------- | ------- |
+| `ArchiveProject(projectName,
                  filePath,
                  isArchiveSrcMedia=True,
                  isArchiveRenderCache=True,
-                 isArchiveProxyMedia=False)       --> Bool               # Archives project to provided file path with the configuration as provided by the optional arguments
-  CreateProject(projectName)                      --> Project            # Creates and returns a project if projectName (string) is unique, and None if it is not.
-  DeleteProject(projectName)                      --> Bool               # Delete project in the current folder if not currently loaded
-  LoadProject(projectName)                        --> Project            # Loads and returns the project with name = projectName (string) if there is a match found, and None if there is no matching Project.
-  GetCurrentProject()                             --> Project            # Returns the currently loaded Resolve project.
-  SaveProject()                                   --> Bool               # Saves the currently loaded project with its own name. Returns True if successful.
-  CloseProject(project)                           --> Bool               # Closes the specified project without saving.
-  CreateFolder(folderName)                        --> Bool               # Creates a folder if folderName (string) is unique.
-  DeleteFolder(folderName)                        --> Bool               # Deletes the specified folder if it exists. Returns True in case of success.
-  GetProjectListInCurrentFolder()                 --> [project names...] # Returns a list of project names in current folder.
-  GetFolderListInCurrentFolder()                  --> [folder names...]  # Returns a list of folder names in current folder.
-  GotoRootFolder()                                --> Bool               # Opens root folder in database.
-  GotoParentFolder()                              --> Bool               # Opens parent folder of current folder in database if current folder has parent.
-  GetCurrentFolder()                              --> string             # Returns the current folder name.
-  OpenFolder(folderName)                          --> Bool               # Opens folder under given name.
-  ImportProject(filePath, projectName=None)       --> Bool               # Imports a project from the file path provided with given project name, if any. Returns True if successful.
-  ExportProject(projectName, filePath, withStillsAndLUTs=True) --> Bool  # Exports project to provided file path, including stills and LUTs if withStillsAndLUTs is True (enabled by default). Returns True in case of success.
-  RestoreProject(filePath, projectName=None)      --> Bool               # Restores a project from the file path provided with given project name, if any. Returns True if successful.
-  GetCurrentDatabase()                            --> {dbInfo}           # Returns a dictionary (with keys 'DbType', 'DbName' and optional 'IpAddress') corresponding to the current database connection
-  GetDatabaseList()                               --> [{dbInfo}]         # Returns a list of dictionary items (with keys 'DbType', 'DbName' and optional 'IpAddress') corresponding to all the databases added to Resolve
-  SetCurrentDatabase({dbInfo})                    --> Bool               # Switches current database connection to the database specified by the keys below, and closes any open project.
-                                                                         # 'DbType': 'Disk' or 'PostgreSQL' (string)
-                                                                         # 'DbName': database name (string)
-                                                                         # 'IpAddress': IP address of the PostgreSQL server (string, optional key - defaults to '127.0.0.1')
-  CreateCloudProject({cloudSettings})             --> Project            # Creates and returns a cloud project.
-                                                                         # '{cloudSettings}': Check 'Cloud Projects Settings' subsection below for more information.
-  ImportCloudProject(filePath, {cloudSettings})   --> Bool               # Returns True if import cloud project is successful; False otherwise
-                                                                         # 'filePath': String; filePath of file to import
-                                                                         # '{cloudSettings}': Check 'Cloud Projects Settings' subsection below for more information.
-  RestoreCloudProject(folderPath, {cloudSettings}) --> Bool              # Returns True if restore cloud project is successful; False otherwise
-                                                                         # 'folderPath': String; path of folder to restore
-                                                                         # '{cloudSettings}': Check 'Cloud Projects Settings' subsection below for more information.
+                 isArchiveProxyMedia=False)`        | `Bool`               | Archives project to provided file path with the configuration as provided by the optional arguments
+| `CreateProject(projectName)`                      | `Project`            | Creates and returns a project if projectName (string) is unique, and None if it is not.
+| `DeleteProject(projectName)`                      | `Bool`               | Delete project in the current folder if not currently loaded
+| `LoadProject(projectName)`                        | `Project`            | Loads and returns the project with name = projectName (string) if there is a match found, and None if there is no matching Project.
+| `GetCurrentProject()`                             | `Project`            | Returns the currently loaded Resolve project.
+| `SaveProject()`                                   | `Bool`               | Saves the currently loaded project with its own name. Returns True if successful.
+| `CloseProject(project)`                           | `Bool`               | Closes the specified project without saving.
+| `CreateFolder(folderName)`                        | `Bool`               | Creates a folder if folderName (string) is unique.
+| `DeleteFolder(folderName)`                        | `Bool`               | Deletes the specified folder if it exists. Returns True in case of success.
+| `GetProjectListInCurrentFolder()`                 | `[project names...]` | Returns a list of project names in current folder.
+| `GetFolderListInCurrentFolder()`                  | `[folder names...]`  | Returns a list of folder names in current folder.
+| `GotoRootFolder()`                                | `Bool`               | Opens root folder in database.
+| `GotoParentFolder()`                              | `Bool`               | Opens parent folder of current folder in database if current folder has parent.
+| `GetCurrentFolder()`                              | `string`             | Returns the current folder name.
+| `OpenFolder(folderName)`                          | `Bool`               | Opens folder under given name.
+| `ImportProject(filePath, projectName=None)`       | `Bool`               | Imports a project from the file path provided with given project name, if any. Returns True if successful.
+| `ExportProject(projectName, filePath, withStillsAndLUTs=True)` | `Bool`  | Exports project to provided file path, including stills and LUTs if withStillsAndLUTs is True (enabled by default). Returns True in case of success.
+| `RestoreProject(filePath, projectName=None)`      | `Bool`               | Restores a project from the file path provided with given project name, if any. Returns True if successful.
+| `GetCurrentDatabase()`                            | `{dbInfo}`           | Returns a dictionary (with keys 'DbType', 'DbName' and optional 'IpAddress') corresponding to the current database connection
+| `GetDatabaseList()`                               | `[{dbInfo}]`         | Returns a list of dictionary items (with keys 'DbType', 'DbName' and optional 'IpAddress') corresponding to all the databases added to Resolve
+| `SetCurrentDatabase({dbInfo})`                    | `Bool`               | Switches current database connection to the database specified by the keys below, and closes any open project.
+                                                                         | 'DbType': 'Disk' or 'PostgreSQL' (string)
+                                                                         | 'DbName': database name (string)
+                                                                         | 'IpAddress': IP address of the PostgreSQL server (string, optional key - defaults to '127.0.0.1')
+| `CreateCloudProject({cloudSettings})`             | `Project`            | Creates and returns a cloud project.
+                                                                         | '{cloudSettings}': Check 'Cloud Projects Settings' subsection below for more information.
+| `ImportCloudProject(filePath, {cloudSettings})`   | `Bool`               | Returns True if import cloud project is successful; False otherwise
+                                                                         | 'filePath': String; filePath of file to import
+                                                                         | '{cloudSettings}': Check 'Cloud Projects Settings' subsection below for more information.
+| `RestoreCloudProject(folderPath, {cloudSettings})` | `Bool`              | Returns True if restore cloud project is successful; False otherwise
+                                                                         | 'folderPath': String; path of folder to restore
+                                                                         | '{cloudSettings}': Check 'Cloud Projects Settings' subsection below for more information.
+| `~~GetProjectsInCurrentFolder()~~`    | `{project names...}` | Returns a dictionary of project names in the current folder.                                  |
+| `~~GetFoldersInCurrentFolder()~~`     | `{folder names...}`  | Returns a dictionary of folder names in the current folder.                                   |
 
 ### Project
-  GetMediaPool()                                  --> MediaPool          # Returns the Media Pool object.
-  GetTimelineCount()                              --> int                # Returns the number of timelines currently present in the project.
-  GetTimelineByIndex(idx)                         --> Timeline           # Returns timeline at the given index, 1 <= idx <= project.GetTimelineCount()
-  GetCurrentTimeline()                            --> Timeline           # Returns the currently loaded timeline.
-  SetCurrentTimeline(timeline)                    --> Bool               # Sets given timeline as current timeline for the project. Returns True if successful.
-  GetGallery()                                    --> Gallery            # Returns the Gallery object.
-  GetName()                                       --> string             # Returns project name.
-  SetName(projectName)                            --> Bool               # Sets project name if given projectName (string) is unique.
-  GetPresetList()                                 --> [presets...]       # Returns a list of presets and their information.
-  SetPreset(presetName)                           --> Bool               # Sets preset by given presetName (string) into project.
-  AddRenderJob()                                  --> string             # Adds a render job based on current render settings to the render queue. Returns a unique job id (string) for the new render job.
-  DeleteRenderJob(jobId)                          --> Bool               # Deletes render job for input job id (string).
-  DeleteAllRenderJobs()                           --> Bool               # Deletes all render jobs in the queue.
-  GetRenderJobList()                              --> [render jobs...]   # Returns a list of render jobs and their information.
-  GetRenderPresetList()                           --> [presets...]       # Returns a list of render presets and their information.
-  StartRendering(jobId1, jobId2, ...)             --> Bool               # Starts rendering jobs indicated by the input job ids.
-  StartRendering([jobIds...], isInteractiveMode=False)    --> Bool       # Starts rendering jobs indicated by the input job ids.
-                                                                         # The optional "isInteractiveMode", when set, enables error feedback in the UI during rendering.
-  StartRendering(isInteractiveMode=False)                 --> Bool       # Starts rendering all queued render jobs.
-                                                                         # The optional "isInteractiveMode", when set, enables error feedback in the UI during rendering.
-  StopRendering()                                 --> None               # Stops any current render processes.
-  IsRenderingInProgress()                         --> Bool               # Returns True if rendering is in progress.
-  LoadRenderPreset(presetName)                    --> Bool               # Sets a preset as current preset for rendering if presetName (string) exists.
-  SaveAsNewRenderPreset(presetName)               --> Bool               # Creates new render preset by given name if presetName(string) is unique.
-  SetRenderSettings({settings})                   --> Bool               # Sets given settings for rendering. Settings is a dict, with support for the keys:
-                                                                         # Refer to "Looking up render settings" section for information for supported settings
-  GetRenderJobStatus(jobId)                       --> {status info}      # Returns a dict with job status and completion percentage of the job by given jobId (string).
-  GetSetting(settingName)                         --> string             # Returns value of project setting (indicated by settingName, string). Check the section below for more information.
-  SetSetting(settingName, settingValue)           --> Bool               # Sets the project setting (indicated by settingName, string) to the value (settingValue, string). Check the section below for more information.
-  GetRenderFormats()                              --> {render formats..} # Returns a dict (format -> file extension) of available render formats.
-  GetRenderCodecs(renderFormat)                   --> {render codecs...} # Returns a dict (codec description -> codec name) of available codecs for given render format (string).
-  GetCurrentRenderFormatAndCodec()                --> {format, codec}    # Returns a dict with currently selected format 'format' and render codec 'codec'.
-  SetCurrentRenderFormatAndCodec(format, codec)   --> Bool               # Sets given render format (string) and render codec (string) as options for rendering.
-  GetCurrentRenderMode()                          --> int                # Returns the render mode: 0 - Individual clips, 1 - Single clip.
-  SetCurrentRenderMode(renderMode)                --> Bool               # Sets the render mode. Specify renderMode = 0 for Individual clips, 1 for Single clip.
-  GetRenderResolutions(format, codec)             --> [{Resolution}]     # Returns list of resolutions applicable for the given render format (string) and render codec (string). Returns full list of resolutions if no argument is provided. Each element in the list is a dictionary with 2 keys "Width" and "Height".
-  RefreshLUTList()                                --> Bool               # Refreshes LUT List
-  GetUniqueId()                                   --> string             # Returns a unique ID for the project item
-  InsertAudioToCurrentTrackAtPlayhead(mediaPath,  --> Bool               # Inserts the media specified by mediaPath (string) with startOffsetInSamples (int) and durationInSamples (int) at the playhead on a selected track on the Fairlight page. Returns True if successful, otherwise False.
-          startOffsetInSamples, durationInSamples)
-  LoadBurnInPreset(presetName)                    --> Bool               # Loads user defined data burn in preset for project when supplied presetName (string). Returns true if successful.
-  ExportCurrentFrameAsStill(filePath)             --> Bool               # Exports current frame as still to supplied filePath. filePath must end in valid export file format. Returns True if succssful, False otherwise.
-  GetColorGroupsList()                            --> [ColorGroups...]   # Returns a list of all group objects in the timeline.
-  AddColorGroup(groupName)                        --> ColorGroup         # Creates a new ColorGroup. groupName must be a unique string.
-  DeleteColorGroup(colorGroup)                    --> Bool               # Deletes the given color group and sets clips to ungrouped.
+
+| Method | Return Type | Comment |
+| ------ | ----------- | ------- |
+| `GetMediaPool()`                                  | `MediaPool`          | Returns the Media Pool object.
+| `GetTimelineCount()`                              | `int`                | Returns the number of timelines currently present in the project.
+| `GetTimelineByIndex(idx)`                         | `Timeline`           | Returns timeline at the given index, 1 <= idx <= project.GetTimelineCount()
+| `GetCurrentTimeline()`                            | `Timeline`           | Returns the currently loaded timeline.
+| `SetCurrentTimeline(timeline)`                    | `Bool`               | Sets given timeline as current timeline for the project. Returns True if successful.
+| `GetGallery()`                                    | `Gallery`            | Returns the Gallery object.
+| `GetName()`                                       | `string`             | Returns project name.
+| `SetName(projectName)`                            | `Bool`               | Sets project name if given projectName (string) is unique.
+| `GetPresetList()`                                 | `[presets...]`       | Returns a list of presets and their information.
+| `SetPreset(presetName)`                           | `Bool`               | Sets preset by given presetName (string) into project.
+| `AddRenderJob()`                                  | `string`             | Adds a render job based on current render settings to the render queue. Returns a unique job id (string) for the new render job.
+| `DeleteRenderJob(jobId)`                          | `Bool`               | Deletes render job for input job id (string).
+| `DeleteAllRenderJobs()`                           | `Bool`               | Deletes all render jobs in the queue.
+| `GetRenderJobList()`                              | `[render jobs...]`   | Returns a list of render jobs and their information.
+| `GetRenderPresetList()`                           | `[presets...]`       | Returns a list of render presets and their information.
+| `StartRendering(jobId1, jobId2, ...)`             | `Bool`               | Starts rendering jobs indicated by the input job ids.
+| `StartRendering([jobIds...], isInteractiveMode=False)`    | `Bool`       | Starts rendering jobs indicated by the input job ids.
+                                                                         | The optional "isInteractiveMode", when set, enables error feedback in the UI during rendering.
+| `StartRendering(isInteractiveMode=False)`                 | `Bool`       | Starts rendering all queued render jobs.
+                                                                         | The optional "isInteractiveMode", when set, enables error feedback in the UI during rendering.
+| `StopRendering()`                                 | `None`               | Stops any current render processes.
+| `IsRenderingInProgress()`                         | `Bool`               | Returns True if rendering is in progress.
+| `LoadRenderPreset(presetName)`                    | `Bool`               | Sets a preset as current preset for rendering if presetName (string) exists.
+| `SaveAsNewRenderPreset(presetName)`               | `Bool`               | Creates new render preset by given name if presetName(string) is unique.
+| `SetRenderSettings({settings})`                   | `Bool`               | Sets given settings for rendering. Settings is a dict, with support for the keys:
+                                                                         | Refer to "Looking up render settings" section for information for supported settings
+| `GetRenderJobStatus(jobId)`                       | `{status info}`      | Returns a dict with job status and completion percentage of the job by given jobId (string).
+| `GetSetting(settingName)`                         | `string`             | Returns value of project setting (indicated by settingName, string). Check the section below for more information.
+| `SetSetting(settingName, settingValue)`           | `Bool`               | Sets the project setting (indicated by settingName, string) to the value (settingValue, string). Check the section below for more information.
+| `GetRenderFormats()`                              | `{render formats..}` | Returns a dict (format -> file extension) of available render formats.
+| `GetRenderCodecs(renderFormat)`                   | `{render codecs...}` | Returns a dict (codec description -> codec name) of available codecs for given render format (string).
+| `GetCurrentRenderFormatAndCodec()`                | `{format, codec}`    | Returns a dict with currently selected format 'format' and render codec 'codec'.
+| `SetCurrentRenderFormatAndCodec(format, codec)`   | `Bool`               | Sets given render format (string) and render codec (string) as options for rendering.
+| `GetCurrentRenderMode()`                          | `int`                | Returns the render mode: 0 - Individual clips, 1 - Single clip.
+| `SetCurrentRenderMode(renderMode)`                | `Bool`               | Sets the render mode. Specify renderMode = 0 for Individual clips, 1 for Single clip.
+| `GetRenderResolutions(format, codec)`             | `[{Resolution}]`     | Returns list of resolutions applicable for the given render format (string) and render codec (string). Returns full list of resolutions if no argument is provided. Each element in the list is a dictionary with 2 keys "Width" and "Height".
+| `RefreshLUTList()`                                | `Bool`               | Refreshes LUT List
+| `GetUniqueId()`                                   | `string`             | Returns a unique ID for the project item
+| `InsertAudioToCurrentTrackAtPlayhead(mediaPath, startOffsetInSamples, durationInSamples)`  | `Bool`               | Inserts the media specified by mediaPath (string) with startOffsetInSamples (int) and durationInSamples (int) at the playhead on a selected track on the Fairlight page. Returns True if successful, otherwise False.
+| `LoadBurnInPreset(presetName)`                    | `Bool`               | Loads user defined data burn in preset for project when supplied presetName (string). Returns true if successful.
+| `ExportCurrentFrameAsStill(filePath)`             | `Bool`               | Exports current frame as still to supplied filePath. filePath must end in valid export file format. Returns True if succssful, False otherwise.
+| `GetColorGroupsList()`                            | `[ColorGroups...]`   | Returns a list of all group objects in the timeline.
+| `AddColorGroup(groupName)`                        | `ColorGroup`         | Creates a new ColorGroup. groupName must be a unique string.
+| `DeleteColorGroup(colorGroup)`                    | `Bool`               | Deletes the given color group and sets clips to ungrouped.
+| `~~GetPresets()~~`                    | `{presets...}`       | Returns a dictionary of presets and their information.                                        |
+| `~~GetRenderJobs()~~`                 | `{render jobs...}`   | Returns a dictionary of render jobs and their information.                                    |
+| `~~GetRenderPresets()~~`              | `{presets...}`       | Returns a dictionary of render presets and their information.                                 |
 
 ### MediaStorage
-  GetMountedVolumeList()                          --> [paths...]         # Returns list of folder paths corresponding to mounted volumes displayed in Resolve’s Media Storage.
-  GetSubFolderList(folderPath)                    --> [paths...]         # Returns list of folder paths in the given absolute folder path.
-  GetFileList(folderPath)                         --> [paths...]         # Returns list of media and file listings in the given absolute folder path. Note that media listings may be logically consolidated entries.
-  RevealInStorage(path)                           --> Bool               # Expands and displays given file/folder path in Resolve’s Media Storage.
-  AddItemListToMediaPool(item1, item2, ...)       --> [clips...]         # Adds specified file/folder paths from Media Storage into current Media Pool folder. Input is one or more file/folder paths. Returns a list of the MediaPoolItems created.
-  AddItemListToMediaPool([items...])              --> [clips...]         # Adds specified file/folder paths from Media Storage into current Media Pool folder. Input is an array of file/folder paths. Returns a list of the MediaPoolItems created.
-  AddItemListToMediaPool([{itemInfo}, ...])       --> [clips...]         # Adds list of itemInfos specified as dict of "media", "startFrame" (int), "endFrame" (int) from Media Storage into current Media Pool folder. Returns a list of the MediaPoolItems created.
-  AddClipMattesToMediaPool(MediaPoolItem, [paths], stereoEye) --> Bool   # Adds specified media files as mattes for the specified MediaPoolItem. StereoEye is an optional argument for specifying which eye to add the matte to for stereo clips ("left" or "right"). Returns True if successful.
-  AddTimelineMattesToMediaPool([paths])           --> [MediaPoolItems]   # Adds specified media files as timeline mattes in current media pool folder. Returns a list of created MediaPoolItems.
+
+| Method | Return Type | Comment |
+| ------ | ----------- | ------- |
+| `GetMountedVolumeList()`                          | `[paths...]`         | Returns list of folder paths corresponding to mounted volumes displayed in Resolve’s Media Storage.
+| `GetSubFolderList(folderPath)`                    | `[paths...]`         | Returns list of folder paths in the given absolute folder path.
+| `GetFileList(folderPath)`                         | `[paths...]`         | Returns list of media and file listings in the given absolute folder path. Note that media listings may be logically consolidated entries.
+| `RevealInStorage(path)`                           | `Bool`               | Expands and displays given file/folder path in Resolve’s Media Storage.
+| `AddItemListToMediaPool(item1, item2, ...)`       | `[clips...]`         | Adds specified file/folder paths from Media Storage into current Media Pool folder. Input is one or more file/folder paths. Returns a list of the MediaPoolItems created.
+| `AddItemListToMediaPool([items...])`              | `[clips...]`         | Adds specified file/folder paths from Media Storage into current Media Pool folder. Input is an array of file/folder paths. Returns a list of the MediaPoolItems created.
+| `AddItemListToMediaPool([{itemInfo}, ...])`       | `[clips...]`         | Adds list of itemInfos specified as dict of "media", "startFrame" (int), "endFrame" (int) from Media Storage into current Media Pool folder. Returns a list of the MediaPoolItems created.
+| `AddClipMattesToMediaPool(MediaPoolItem, [paths], stereoEye)` | `Bool`   | Adds specified media files as mattes for the specified MediaPoolItem. StereoEye is an optional argument for specifying which eye to add the matte to for stereo clips ("left" or "right"). Returns True if successful.
+| `AddTimelineMattesToMediaPool([paths])`           | `[MediaPoolItems]`   | Adds specified media files as timeline mattes in current media pool folder. Returns a list of created MediaPoolItems.
+| `~~GetMountedVolumes()~~`             | `{paths...}`         | Returns a dictionary of folder paths corresponding to mounted volumes in Resolve's Media Storage. |
+| `~~GetSubFolders(folderPath)~~`       | `{paths...}`         | Returns a dictionary of folder paths within the specified absolute folder path.               |
+| `~~GetFiles(folderPath)~~`            | `{paths...}`         | Returns a dictionary of media and file listings in the specified absolute folder path. Media listings may be logically consolidated entries. |
+| `~~AddItemsToMediaPool(item1, item2, ...)~~` | `{clips...}`   | Adds specified file/folder paths from Media Storage into the current Media Pool folder. Returns a dictionary of created `MediaPoolItems`. |
+| `~~AddItemsToMediaPool([items...])~~` | `{clips...}`         | Adds specified file/folder paths from Media Storage into the current Media Pool folder as an array. Returns a dictionary of created `MediaPoolItems`. |
 
 ### MediaPool
-  GetRootFolder()                                 --> Folder             # Returns root Folder of Media Pool
-  AddSubFolder(folder, name)                      --> Folder             # Adds new subfolder under specified Folder object with the given name.
-  RefreshFolders()                                --> Bool               # Updates the folders in collaboration mode
-  CreateEmptyTimeline(name)                       --> Timeline           # Adds new timeline with given name.
-  AppendToTimeline(clip1, clip2, ...)             --> [TimelineItem]     # Appends specified MediaPoolItem objects in the current timeline. Returns the list of appended timelineItems.
-  AppendToTimeline([clips])                       --> [TimelineItem]     # Appends specified MediaPoolItem objects in the current timeline. Returns the list of appended timelineItems.
-  AppendToTimeline([{clipInfo}, ...])             --> [TimelineItem]     # Appends list of clipInfos specified as dict of "mediaPoolItem", "startFrame" (float/int), "endFrame" (float/int), (optional) "mediaType" (int; 1 - Video only, 2 - Audio only), "trackIndex" (int) and "recordFrame" (float/int). Returns the list of appended timelineItems.
-  CreateTimelineFromClips(name, clip1, clip2,...) --> Timeline           # Creates new timeline with specified name, and appends the specified MediaPoolItem objects.
-  CreateTimelineFromClips(name, [clips])          --> Timeline           # Creates new timeline with specified name, and appends the specified MediaPoolItem objects.
-  CreateTimelineFromClips(name, [{clipInfo}])     --> Timeline           # Creates new timeline with specified name, appending the list of clipInfos specified as a dict of "mediaPoolItem", "startFrame" (float/int), "endFrame" (float/int), "recordFrame" (float/int).
-  ImportTimelineFromFile(filePath, {importOptions}) --> Timeline         # Creates timeline based on parameters within given file (AAF/EDL/XML/FCPXML/DRT/ADL/OTIO) and optional importOptions dict, with support for the keys:
+
+| Method | Return Type | Comment |
+| ------ | ----------- | ------- |
+| `GetRootFolder()`                                 | `Folder`             | Returns root Folder of Media Pool
+| `AddSubFolder(folder, name)`                      | `Folder`             | Adds new subfolder under specified Folder object with the given name.
+| `RefreshFolders()`                                | `Bool`               | Updates the folders in collaboration mode
+| `CreateEmptyTimeline(name)`                       | `Timeline`           | Adds new timeline with given name.
+| `AppendToTimeline(clip1, clip2, ...)`             | `[TimelineItem]`     | Appends specified MediaPoolItem objects in the current timeline. Returns the list of appended timelineItems.
+| `AppendToTimeline([clips])`                       | `[TimelineItem]`     | Appends specified MediaPoolItem objects in the current timeline. Returns the list of appended timelineItems.
+| `AppendToTimeline([{clipInfo}, ...])`             | `[TimelineItem]`     | Appends list of clipInfos specified as dict of "mediaPoolItem", "startFrame" (float/int), "endFrame" (float/int), (optional) "mediaType" (int; 1 - Video only, 2 - Audio only), "trackIndex" (int) and "recordFrame" (float/int). Returns the list of appended timelineItems.
+| `CreateTimelineFromClips(name, clip1, clip2,...)` | `Timeline`           | Creates new timeline with specified name, and appends the specified MediaPoolItem objects.
+| `CreateTimelineFromClips(name, [clips])`          | `Timeline`           | Creates new timeline with specified name, and appends the specified MediaPoolItem objects.
+| `CreateTimelineFromClips(name, [{clipInfo}])`     | `Timeline`           | Creates new timeline with specified name, appending the list of clipInfos specified as a dict of "mediaPoolItem", "startFrame" (float/int), "endFrame" (float/int), "recordFrame" (float/int).
+| `ImportTimelineFromFile(filePath, {importOptions})` | `Timeline`         | Creates timeline based on parameters within given file (AAF/EDL/XML/FCPXML/DRT/ADL/OTIO) and optional importOptions dict, with support for the keys:
                                                                          # "timelineName": string, specifies the name of the timeline to be created. Not valid for DRT import
                                                                          # "importSourceClips": Bool, specifies whether source clips should be imported, True by default. Not valid for DRT import
                                                                          # "sourceClipsPath": string, specifies a filesystem path to search for source clips if the media is inaccessible in their original path and if "importSourceClips" is True
                                                                          # "sourceClipsFolders": List of Media Pool folder objects to search for source clips if the media is not present in current folder and if "importSourceClips" is False. Not valid for DRT import
                                                                          # "interlaceProcessing": Bool, specifies whether to enable interlace processing on the imported timeline being created. valid only for AAF import
-  DeleteTimelines([timeline])                     --> Bool               # Deletes specified timelines in the media pool.
-  GetCurrentFolder()                              --> Folder             # Returns currently selected Folder.
-  SetCurrentFolder(Folder)                        --> Bool               # Sets current folder by given Folder.
-  DeleteClips([clips])                            --> Bool               # Deletes specified clips or timeline mattes in the media pool
-  ImportFolderFromFile(filePath, sourceClipsPath="") --> Bool            # Returns true if import from given DRB filePath is successful, false otherwise
+| `DeleteTimelines([timeline])`                     | `Bool`               | Deletes specified timelines in the media pool.
+| `GetCurrentFolder()`                              | `Folder`             | Returns currently selected Folder.
+| `SetCurrentFolder(Folder)`                        | `Bool`               | Sets current folder by given Folder.
+| `DeleteClips([clips])`                            | `Bool`               | Deletes specified clips or timeline mattes in the media pool
+| `ImportFolderFromFile(filePath, sourceClipsPath="")` | `Bool`            | Returns true if import from given DRB filePath is successful, false otherwise
                                                                          # sourceClipsPath is a string that specifies a filesystem path to search for source clips if the media is inaccessible in their original path, empty by default
-  DeleteFolders([subfolders])                     --> Bool               # Deletes specified subfolders in the media pool
-  MoveClips([clips], targetFolder)                --> Bool               # Moves specified clips to target folder.
-  MoveFolders([folders], targetFolder)            --> Bool               # Moves specified folders to target folder.
-  GetClipMatteList(MediaPoolItem)                 --> [paths]            # Get mattes for specified MediaPoolItem, as a list of paths to the matte files.
-  GetTimelineMatteList(Folder)                    --> [MediaPoolItems]   # Get mattes in specified Folder, as list of MediaPoolItems.
-  DeleteClipMattes(MediaPoolItem, [paths])        --> Bool               # Delete mattes based on their file paths, for specified MediaPoolItem. Returns True on success.
-  RelinkClips([MediaPoolItem], folderPath)        --> Bool               # Update the folder location of specified media pool clips with the specified folder path.
-  UnlinkClips([MediaPoolItem])                    --> Bool               # Unlink specified media pool clips.
-  ImportMedia([items...])                         --> [MediaPoolItems]   # Imports specified file/folder paths into current Media Pool folder. Input is an array of file/folder paths. Returns a list of the MediaPoolItems created.
-  ImportMedia([{clipInfo}])                       --> [MediaPoolItems]   # Imports file path(s) into current Media Pool folder as specified in list of clipInfo dict. Returns a list of the MediaPoolItems created.
+| `DeleteFolders([subfolders])`                     | `Bool`               | Deletes specified subfolders in the media pool
+| `MoveClips([clips], targetFolder)`                | `Bool`               | Moves specified clips to target folder.
+| `MoveFolders([folders], targetFolder)`            | `Bool`               | Moves specified folders to target folder.
+| `GetClipMatteList(MediaPoolItem)`                 | `[paths]`            | Get mattes for specified MediaPoolItem, as a list of paths to the matte files.
+| `GetTimelineMatteList(Folder)`                    | `[MediaPoolItems]`   | Get mattes in specified Folder, as list of MediaPoolItems.
+| `DeleteClipMattes(MediaPoolItem, [paths])`        | `Bool`               | Delete mattes based on their file paths, for specified MediaPoolItem. Returns True on success.
+| `RelinkClips([MediaPoolItem], folderPath)`        | `Bool`               | Update the folder location of specified media pool clips with the specified folder path.
+| `UnlinkClips([MediaPoolItem])`                    | `Bool`               | Unlink specified media pool clips.
+| `ImportMedia([items...])`                         | `[MediaPoolItems]`   | Imports specified file/folder paths into current Media Pool folder. Input is an array of file/folder paths. Returns a list of the MediaPoolItems created.
+| `ImportMedia([{clipInfo}])`                       | `[MediaPoolItems]`   | Imports file path(s) into current Media Pool folder as specified in list of clipInfo dict. Returns a list of the MediaPoolItems created.
                                                                          # Each clipInfo gets imported as one MediaPoolItem unless 'Show Individual Frames' is turned on.
                                                                          # Example: ImportMedia([{"FilePath":"file_%03d.dpx", "StartIndex":1, "EndIndex":100}]) would import clip "file_[001-100].dpx".
-  ExportMetadata(fileName, [clips])               --> Bool               # Exports metadata of specified clips to 'fileName' in CSV format.
+| `ExportMetadata(fileName, [clips])`               | `Bool`               | Exports metadata of specified clips to 'fileName' in CSV format.
                                                                          # If no clips are specified, all clips from media pool will be used.
-  GetUniqueId()                                   --> string             # Returns a unique ID for the media pool
-  CreateStereoClip(LeftMediaPoolItem,
-                   RightMediaPoolItem)            --> MediaPoolItem      # Takes in two existing media pool items and creates a new 3D stereoscopic media pool entry replacing the input media in the media pool.
-  GetSelectedClips()                              --> [MediaPoolItems]   # Returns the current selected MediaPoolItems
-  SetSelectedClip(MediaPoolItem)                  --> Bool               # Sets the selected MediaPoolItem to the given MediaPoolItem
+| `GetUniqueId()`                                   | `string`             | Returns a unique ID for the media pool
+| `CreateStereoClip(LeftMediaPoolItem, RightMediaPoolItem)`            | MediaPoolItem      | Takes in two existing media pool items and creates a new 3D stereoscopic media pool entry replacing the input media in the media pool.
+| `GetSelectedClips()`                              | `[MediaPoolItems]`   | Returns the current selected MediaPoolItems
+| `SetSelectedClip(MediaPoolItem)`                  | `Bool`               | Sets the selected MediaPoolItem to the given MediaPoolItem
 
 ### Folder
-  GetClipList()                                   --> [clips...]         # Returns a list of clips (items) within the folder.
-  GetName()                                       --> string             # Returns the media folder name.
-  GetSubFolderList()                              --> [folders...]       # Returns a list of subfolders in the folder.
-  GetIsFolderStale()                              --> bool               # Returns true if folder is stale in collaboration mode, false otherwise
-  GetUniqueId()                                   --> string             # Returns a unique ID for the media pool folder
-  Export(filePath)                                --> bool               # Returns true if export of DRB folder to filePath is successful, false otherwise
-  TranscribeAudio()                               --> Bool               # Transcribes audio of the MediaPoolItems within the folder and nested folders. Returns True if successful; False otherwise
-  ClearTranscription()                            --> Bool               # Clears audio transcription of the MediaPoolItems within the folder and nested folders. Returns True if successful; False otherwise.
+
+| Method | Return Type | Comment |
+| ------ | ----------- | ------- |
+| `GetClipList()`                                   | `[clips...]`         | Returns a list of clips (items) within the folder.
+| `GetName()`                                       | `string`             | Returns the media folder name.
+| `GetSubFolderList()`                              | `[folders...]`       | Returns a list of subfolders in the folder.
+| `GetIsFolderStale()`                              | `bool`               | Returns true if folder is stale in collaboration mode, false otherwise
+| `GetUniqueId()`                                   | `string`             | Returns a unique ID for the media pool folder
+| `Export(filePath)`                                | `bool`               | Returns true if export of DRB folder to filePath is successful, false otherwise
+| `TranscribeAudio()`                               | `Bool`               | Transcribes audio of the MediaPoolItems within the folder and nested folders. Returns True if successful; False otherwise
+| `ClearTranscription()`                            | `Bool`               | Clears audio transcription of the MediaPoolItems within the folder and nested folders. Returns True if successful; False otherwise.
+| `~~GetClips()~~`                      | `{clips...}`         | Returns a dictionary of clips within the folder.                                              |
+| `~~GetSubFolders()~~`                 | `{folders...}`       | Returns a dictionary of subfolders within the folder.                                         |
 
 ### MediaPoolItem
-  GetName()                                       --> string             # Returns the clip name.
-  GetMetadata(metadataType=None)                  --> string|dict        # Returns the metadata value for the key 'metadataType'.
+
+| Method | Return Type | Comment |
+| ------ | ----------- | ------- |
+| `GetName()`                                       | `string`             | Returns the clip name.
+| `GetMetadata(metadataType=None)`                  | `string|dict`        | Returns the metadata value for the key 'metadataType'.
                                                                          # If no argument is specified, a dict of all set metadata properties is returned.
-  SetMetadata(metadataType, metadataValue)        --> Bool               # Sets the given metadata to metadataValue (string). Returns True if successful.
-  SetMetadata({metadata})                         --> Bool               # Sets the item metadata with specified 'metadata' dict. Returns True if successful.
-  GetThirdPartyMetadata(metadataType=None)        --> string|dict        # Returns the third party metadata value for the key 'metadataType'.
+| `SetMetadata(metadataType, metadataValue)`        | `Bool`               | Sets the given metadata to metadataValue (string). Returns True if successful.
+| `SetMetadata({metadata})`                         | `Bool`               | Sets the item metadata with specified 'metadata' dict. Returns True if successful.
+| `GetThirdPartyMetadata(metadataType=None)`        | `string|dict`        | Returns the third party metadata value for the key 'metadataType'.
                                                                          # If no argument is specified, a dict of all set third parth metadata properties is returned.
-  SetThirdPartyMetadata(metadataType, metadataValue) --> Bool            # Sets/Add the given third party metadata to metadataValue (string). Returns True if successful.
-  SetThirdPartyMetadata({metadata})               --> Bool               # Sets/Add the item third party metadata with specified 'metadata' dict. Returns True if successful.
-  GetMediaId()                                    --> string             # Returns the unique ID for the MediaPoolItem.
-  AddMarker(frameId, color, name, note, duration, --> Bool               # Creates a new marker at given frameId position and with given marker information. 'customData' is optional and helps to attach user specific data to the marker.
-            customData)
-  GetMarkers()                                    --> {markers...}       # Returns a dict (frameId -> {information}) of all markers and dicts with their information.
+| `SetThirdPartyMetadata(metadataType, metadataValue)` | `Bool`            | Sets/Add the given third party metadata to metadataValue (string). Returns True if successful.
+| `SetThirdPartyMetadata({metadata})`               | `Bool`               | Sets/Add the item third party metadata with specified 'metadata' dict. Returns True if successful.
+| `GetMediaId()`                                    | `string`             | Returns the unique ID for the MediaPoolItem.
+| `AddMarker(frameId, color, name, note, duration, customData)` | `Bool`               | Creates a new marker at given frameId position and with given marker information. 'customData' is optional and helps to attach user specific data to the marker.
+| `GetMarkers()`                                    | `{markers...}`       | Returns a dict (frameId -> {information}) of all markers and dicts with their information.
                                                                          # Example of output format: {96.0: {'color': 'Green', 'duration': 1.0, 'note': '', 'name': 'Marker 1', 'customData': ''}, ...}
                                                                          # In the above example - there is one 'Green' marker at offset 96 (position of the marker)
-  GetMarkerByCustomData(customData)               --> {markers...}       # Returns marker {information} for the first matching marker with specified customData.
-  UpdateMarkerCustomData(frameId, customData)     --> Bool               # Updates customData (string) for the marker at given frameId position. CustomData is not exposed via UI and is useful for scripting developer to attach any user specific data to markers.
-  GetMarkerCustomData(frameId)                    --> string             # Returns customData string for the marker at given frameId position.
-  DeleteMarkersByColor(color)                     --> Bool               # Delete all markers of the specified color from the media pool item. "All" as argument deletes all color markers.
-  DeleteMarkerAtFrame(frameNum)                   --> Bool               # Delete marker at frame number from the media pool item.
-  DeleteMarkerByCustomData(customData)            --> Bool               # Delete first matching marker with specified customData.
-  AddFlag(color)                                  --> Bool               # Adds a flag with given color (string).
-  GetFlagList()                                   --> [colors...]        # Returns a list of flag colors assigned to the item.
-  ClearFlags(color)                               --> Bool               # Clears the flag of the given color if one exists. An "All" argument is supported and clears all flags.
-  GetClipColor()                                  --> string             # Returns the item color as a string.
-  SetClipColor(colorName)                         --> Bool               # Sets the item color based on the colorName (string).
-  ClearClipColor()                                --> Bool               # Clears the item color.
-  GetClipProperty(propertyName=None)              --> string|dict        # Returns the property value for the key 'propertyName'.
+| `GetMarkerByCustomData(customData)`               | `{markers...}`       | Returns marker {information} for the first matching marker with specified customData.
+| `UpdateMarkerCustomData(frameId, customData)`     | `Bool`               | Updates customData (string) for the marker at given frameId position. CustomData is not exposed via UI and is useful for scripting developer to attach any user specific data to markers.
+| `GetMarkerCustomData(frameId)`                    | `string`             | Returns customData string for the marker at given frameId position.
+| `DeleteMarkersByColor(color)`                     | `Bool`               | Delete all markers of the specified color from the media pool item. "All" as argument deletes all color markers.
+| `DeleteMarkerAtFrame(frameNum)`                   | `Bool`               | Delete marker at frame number from the media pool item.
+| `DeleteMarkerByCustomData(customData)`            | `Bool`               | Delete first matching marker with specified customData.
+| `AddFlag(color)`                                  | `Bool`               | Adds a flag with given color (string).
+| `GetFlagList()`                                   | `[colors...]`        | Returns a list of flag colors assigned to the item.
+| `ClearFlags(color)`                               | `Bool`               | Clears the flag of the given color if one exists. An "All" argument is supported and clears all flags.
+| `GetClipColor()`                                  | `string`             | Returns the item color as a string.
+| `SetClipColor(colorName)`                         | `Bool`               | Sets the item color based on the colorName (string).
+| `ClearClipColor()`                                | `Bool`               | Clears the item color.
+| `GetClipProperty(propertyName=None)`              | `string|dict`        | Returns the property value for the key 'propertyName'.
                                                                          # If no argument is specified, a dict of all clip properties is returned. Check the section below for more information.
-  SetClipProperty(propertyName, propertyValue)    --> Bool               # Sets the given property to propertyValue (string). Check the section below for more information.
-  LinkProxyMedia(proxyMediaFilePath)              --> Bool               # Links proxy media located at path specified by arg 'proxyMediaFilePath' with the current clip. 'proxyMediaFilePath' should be absolute clip path.
-  UnlinkProxyMedia()                              --> Bool               # Unlinks any proxy media associated with clip.
-  ReplaceClip(filePath)                           --> Bool               # Replaces the underlying asset and metadata of MediaPoolItem with the specified absolute clip path.
-  GetUniqueId()                                   --> string             # Returns a unique ID for the media pool item
-  TranscribeAudio()                               --> Bool               # Transcribes audio of the MediaPoolItem. Returns True if successful; False otherwise
-  ClearTranscription()                            --> Bool               # Clears audio transcription of the MediaPoolItem. Returns True if successful; False otherwise.
+| `SetClipProperty(propertyName, propertyValue)`    | `Bool`               | Sets the given property to propertyValue (string). Check the section below for more information.
+| `LinkProxyMedia(proxyMediaFilePath)`              | `Bool`               | Links proxy media located at path specified by arg 'proxyMediaFilePath' with the current clip. 'proxyMediaFilePath' should be absolute clip path.
+| `UnlinkProxyMedia()`                              | `Bool`               | Unlinks any proxy media associated with clip.
+| `ReplaceClip(filePath)`                           | `Bool`               | Replaces the underlying asset and metadata of MediaPoolItem with the specified absolute clip path.
+| `GetUniqueId()`                                   | `string`             | Returns a unique ID for the media pool item
+| `TranscribeAudio()`                               | `Bool`               | Transcribes audio of the MediaPoolItem. Returns True if successful; False otherwise
+| `ClearTranscription()`                            | `Bool`               | Clears audio transcription of the MediaPoolItem. Returns True if successful; False otherwise.
 
-  GetAudioMapping()                               --> json formatted string # Returns a string with MediaPoolItem's audio mapping information. Check 'Audio Mapping' section below for more information.
+| `GetAudioMapping()`                               | `json formatted string` | Returns a string with MediaPoolItem's audio mapping information. Check 'Audio Mapping' section below for more information.
+| `~~GetFlags()~~`                      | `{colors...}`        | Returns a dictionary of flag colors assigned to the item.                                     |
 
 ### Timeline
-  GetName()                                       --> string             # Returns the timeline name.
-  SetName(timelineName)                           --> Bool               # Sets the timeline name if timelineName (string) is unique. Returns True if successful.
-  GetStartFrame()                                 --> int                # Returns the frame number at the start of timeline.
-  GetEndFrame()                                   --> int                # Returns the frame number at the end of timeline.
-  SetStartTimecode(timecode)                      --> Bool               # Set the start timecode of the timeline to the string 'timecode'. Returns true when the change is successful, false otherwise.
-  GetStartTimecode()                              --> string             # Returns the start timecode for the timeline.
-  GetTrackCount(trackType)                        --> int                # Returns the number of tracks for the given track type ("audio", "video" or "subtitle").
-  AddTrack(trackType, subTrackType)               --> Bool               # Adds track of trackType ("video", "subtitle", "audio"). Optional argument subTrackType is used for "audio" trackType.
+
+| Method | Return Type | Comment |
+| ------ | ----------- | ------- |
+| `GetName()`                                       | `string`             | Returns the timeline name.
+| `SetName(timelineName)`                           | `Bool`               | Sets the timeline name if timelineName (string) is unique. Returns True if successful.
+| `GetStartFrame()`                                 | `int`                | Returns the frame number at the start of timeline.
+| `GetEndFrame()`                                   | `int`                | Returns the frame number at the end of timeline.
+| `SetStartTimecode(timecode)`                      | `Bool`               | Set the start timecode of the timeline to the string 'timecode'. Returns true when the change is successful, false otherwise.
+| `GetStartTimecode()`                              | `string`             | Returns the start timecode for the timeline.
+| `GetTrackCount(trackType)`                        | `int`                | Returns the number of tracks for the given track type ("audio", "video" or "subtitle").
+| `AddTrack(trackType, subTrackType)`               | `Bool`               | Adds track of trackType ("video", "subtitle", "audio"). Optional argument subTrackType is used for "audio" trackType.
                                                                          # subTrackType can be one of {"mono", "stereo", "5.1", "5.1film", "7.1", "7.1film", "adaptive1", ... , "adaptive24"}
                                                                          # subTrackType defaults to 'mono' if skipped and track type is ‘audio’.
-  AddTrack(trackType, newTrackOptions)            --> Bool               # Adds track of trackType ("video", "subtitle", "audio"). Optional newTrackOptions = {'audioType': same as subTrackType above, 'index': 1 <= index <= GetTrackCount(trackType))
+| `AddTrack(trackType, newTrackOptions)`            | `Bool`               | Adds track of trackType ("video", "subtitle", "audio"). Optional newTrackOptions = {'audioType': same as subTrackType above, 'index': 1 <= index <= GetTrackCount(trackType))
                                                                          # 'audiotype' defaults to 'mono' if arg skipped and track type is ‘audio’.
                                                                          # 'index' if skipped (or if value not in bounds) appends track.
-  DeleteTrack(trackType, trackIndex)              --> Bool               # Deletes track of trackType ("video", "subtitle", "audio") and given trackIndex. 1 <= trackIndex <= GetTrackCount(trackType).
-  GetTrackSubType(trackType, trackIndex)          --> string             # Returns an audio track's format.
+| `DeleteTrack(trackType, trackIndex)`              | `Bool`               | Deletes track of trackType ("video", "subtitle", "audio") and given trackIndex. 1 <= trackIndex <= GetTrackCount(trackType).
+| `GetTrackSubType(trackType, trackIndex)`          | `string`             | Returns an audio track's format.
                                                                          # the return value is one of {"mono", "stereo", "5.1", "5.1film", "7.1", "7.1film", "adaptive1", ... , "adaptive24"} and matches the parameters 'subTrackType' and 'audioType' in timeline.AddTrack.
                                                                          # returns a blank string for non audio tracks
 
-  SetTrackEnable(trackType, trackIndex, Bool)     --> Bool               # Enables/Disables track with given trackType and trackIndex
+| `SetTrackEnable(trackType, trackIndex, Bool)`     | `Bool`               | Enables/Disables track with given trackType and trackIndex
                                                                          # trackType is one of {"audio", "video", "subtitle"}
                                                                          # 1 <= trackIndex <= GetTrackCount(trackType).
-  GetIsTrackEnabled(trackType, trackIndex)        --> Bool               # Returns True if track with given trackType and trackIndex is enabled and False otherwise.
+| `GetIsTrackEnabled(trackType, trackIndex)`        | `Bool`               | Returns True if track with given trackType and trackIndex is enabled and False otherwise.
                                                                          # trackType is one of {"audio", "video", "subtitle"}
                                                                          # 1 <= trackIndex <= GetTrackCount(trackType).
-  SetTrackLock(trackType, trackIndex, Bool)       --> Bool               # Locks/Unlocks track with given trackType and trackIndex
+| `SetTrackLock(trackType, trackIndex, Bool)`       | `Bool`               | Locks/Unlocks track with given trackType and trackIndex
                                                                          # trackType is one of {"audio", "video", "subtitle"}
                                                                          # 1 <= trackIndex <= GetTrackCount(trackType).
-  GetIsTrackLocked(trackType, trackIndex)         --> Bool               # Returns True if track with given trackType and trackIndex is locked and False otherwise.
+| `GetIsTrackLocked(trackType, trackIndex)`         | `Bool`               | Returns True if track with given trackType and trackIndex is locked and False otherwise.
                                                                          # trackType is one of {"audio", "video", "subtitle"}
                                                                          # 1 <= trackIndex <= GetTrackCount(trackType).
-  DeleteClips([timelineItems], Bool)              --> Bool               # Deletes specified TimelineItems from the timeline, performing ripple delete if the second argument is True. Second argument is optional (The default for this is False)
-  SetClipsLinked([timelineItems], Bool)           --> Bool               # Links or unlinks the specified TimelineItems depending on second argument.
-  GetItemListInTrack(trackType, index)            --> [items...]         # Returns a list of timeline items on that track (based on trackType and index). 1 <= index <= GetTrackCount(trackType).
-  AddMarker(frameId, color, name, note, duration, --> Bool               # Creates a new marker at given frameId position and with given marker information. 'customData' is optional and helps to attach user specific data to the marker.
-            customData)
-  GetMarkers()                                    --> {markers...}       # Returns a dict (frameId -> {information}) of all markers and dicts with their information.
+| `DeleteClips([timelineItems], Bool)`              | `Bool`               | Deletes specified TimelineItems from the timeline, performing ripple delete if the second argument is True. Second argument is optional (The default for this is False)
+| `SetClipsLinked([timelineItems], Bool)`           | `Bool`               | Links or unlinks the specified TimelineItems depending on second argument.
+| `GetItemListInTrack(trackType, index)`            | `[items...]`         | Returns a list of timeline items on that track (based on trackType and index). 1 <= index <= GetTrackCount(trackType).
+| `AddMarker(frameId, color, name, note, duration, customData)` | `Bool`               | Creates a new marker at given frameId position and with given marker information. 'customData' is optional and helps to attach user specific data to the marker.
+| `GetMarkers()`                                    | `{markers...}`       | Returns a dict (frameId -> {information}) of all markers and dicts with their information.
                                                                          # Example: a value of {96.0: {'color': 'Green', 'duration': 1.0, 'note': '', 'name': 'Marker 1', 'customData': ''}, ...} indicates a single green marker at timeline offset 96
-  GetMarkerByCustomData(customData)               --> {markers...}       # Returns marker {information} for the first matching marker with specified customData.
-  UpdateMarkerCustomData(frameId, customData)     --> Bool               # Updates customData (string) for the marker at given frameId position. CustomData is not exposed via UI and is useful for scripting developer to attach any user specific data to markers.
-  GetMarkerCustomData(frameId)                    --> string             # Returns customData string for the marker at given frameId position.
-  DeleteMarkersByColor(color)                     --> Bool               # Deletes all timeline markers of the specified color. An "All" argument is supported and deletes all timeline markers.
-  DeleteMarkerAtFrame(frameNum)                   --> Bool               # Deletes the timeline marker at the given frame number.
-  DeleteMarkerByCustomData(customData)            --> Bool               # Delete first matching marker with specified customData.
-  ApplyGradeFromDRX(path, gradeMode, item1, item2, ...)--> Bool          # Loads a still from given file path (string) and applies grade to Timeline Items with gradeMode (int): 0 - "No keyframes", 1 - "Source Timecode aligned", 2 - "Start Frames aligned".
-  ApplyGradeFromDRX(path, gradeMode, [items])     --> Bool               # Loads a still from given file path (string) and applies grade to Timeline Items with gradeMode (int): 0 - "No keyframes", 1 - "Source Timecode aligned", 2 - "Start Frames aligned".
-  GetCurrentTimecode()                            --> string             # Returns a string timecode representation for the current playhead position, while on Cut, Edit, Color, Fairlight and Deliver pages.
-  SetCurrentTimecode(timecode)                    --> Bool               # Sets current playhead position from input timecode for Cut, Edit, Color, Fairlight and Deliver pages.
-  GetCurrentVideoItem()                           --> item               # Returns the current video timeline item.
-  GetCurrentClipThumbnailImage()                  --> {thumbnailData}    # Returns a dict (keys "width", "height", "format" and "data") with data containing raw thumbnail image data (RGB 8-bit image data encoded in base64 format) for current media in the Color Page.
+| `GetMarkerByCustomData(customData)`               | `{markers...}`       | Returns marker {information} for the first matching marker with specified customData.
+| `UpdateMarkerCustomData(frameId, customData)`     | `Bool`               | Updates customData (string) for the marker at given frameId position. CustomData is not exposed via UI and is useful for scripting developer to attach any user specific data to markers.
+| `GetMarkerCustomData(frameId)`                    | `string`             | Returns customData string for the marker at given frameId position.
+| `DeleteMarkersByColor(color)`                     | `Bool`               | Deletes all timeline markers of the specified color. An "All" argument is supported and deletes all timeline markers.
+| `DeleteMarkerAtFrame(frameNum)`                   | `Bool`               | Deletes the timeline marker at the given frame number.
+| `DeleteMarkerByCustomData(customData)`            | `Bool`               | Delete first matching marker with specified customData.
+| `ApplyGradeFromDRX(path, gradeMode, item1, item2, ...)` | `Bool`          | Loads a still from given file path (string) and applies grade to Timeline Items with gradeMode (int): 0 - "No keyframes", 1 - "Source Timecode aligned", 2 - "Start Frames aligned".
+| `ApplyGradeFromDRX(path, gradeMode, [items])`     | `Bool`               | Loads a still from given file path (string) and applies grade to Timeline Items with gradeMode (int): 0 - "No keyframes", 1 - "Source Timecode aligned", 2 - "Start Frames aligned".
+| `GetCurrentTimecode()`                            | `string`             | Returns a string timecode representation for the current playhead position, while on Cut, Edit, Color, Fairlight and Deliver pages.
+| `SetCurrentTimecode(timecode)`                    | `Bool`               | Sets current playhead position from input timecode for Cut, Edit, Color, Fairlight and Deliver pages.
+| `GetCurrentVideoItem()`                           | `item`               | Returns the current video timeline item.
+| `GetCurrentClipThumbnailImage()`                  | `{thumbnailData}`    | Returns a dict (keys "width", "height", "format" and "data") with data containing raw thumbnail image data (RGB 8-bit image data encoded in base64 format) for current media in the Color Page.
                                                                          # An example of how to retrieve and interpret thumbnails is provided in 6_get_current_media_thumbnail.py in the Examples folder.
-  GetTrackName(trackType, trackIndex)             --> string             # Returns the track name for track indicated by trackType ("audio", "video" or "subtitle") and index. 1 <= trackIndex <= GetTrackCount(trackType).
-  SetTrackName(trackType, trackIndex, name)       --> Bool               # Sets the track name (string) for track indicated by trackType ("audio", "video" or "subtitle") and index. 1 <= trackIndex <= GetTrackCount(trackType).
-  DuplicateTimeline(timelineName)                 --> timeline           # Duplicates the timeline and returns the created timeline, with the (optional) timelineName, on success.
-  CreateCompoundClip([timelineItems], {clipInfo}) --> timelineItem       # Creates a compound clip of input timeline items with an optional clipInfo map: {"startTimecode" : "00:00:00:00", "name" : "Compound Clip 1"}. It returns the created timeline item.
-  CreateFusionClip([timelineItems])               --> timelineItem       # Creates a Fusion clip of input timeline items. It returns the created timeline item.
-  ImportIntoTimeline(filePath, {importOptions})   --> Bool               # Imports timeline items from an AAF file and optional importOptions dict into the timeline, with support for the keys:
+| `GetTrackName(trackType, trackIndex)`             | `string`             | Returns the track name for track indicated by trackType ("audio", "video" or "subtitle") and index. 1 <= trackIndex <= GetTrackCount(trackType).
+| `SetTrackName(trackType, trackIndex, name)`       | `Bool`               | Sets the track name (string) for track indicated by trackType ("audio", "video" or "subtitle") and index. 1 <= trackIndex <= GetTrackCount(trackType).
+| `DuplicateTimeline(timelineName)`                 | `timeline`           | Duplicates the timeline and returns the created timeline, with the (optional) timelineName, on success.
+| `CreateCompoundClip([timelineItems], {clipInfo})` | `timelineItem`       | Creates a compound clip of input timeline items with an optional clipInfo map: {"startTimecode" : "00:00:00:00", "name" : "Compound Clip 1"}. It returns the created timeline item.
+| `CreateFusionClip([timelineItems])`               | `timelineItem`       | Creates a Fusion clip of input timeline items. It returns the created timeline item.
+| `ImportIntoTimeline(filePath, {importOptions})`   | `Bool`               | Imports timeline items from an AAF file and optional importOptions dict into the timeline, with support for the keys:
                                                                          # "autoImportSourceClipsIntoMediaPool": Bool, specifies if source clips should be imported into media pool, True by default
                                                                          # "ignoreFileExtensionsWhenMatching": Bool, specifies if file extensions should be ignored when matching, False by default
                                                                          # "linkToSourceCameraFiles": Bool, specifies if link to source camera files should be enabled, False by default
@@ -372,148 +402,165 @@ Some commonly used API functions are described below (*). As with the resolve ob
                                                                          # "sourceClipsPath": string, specifies a filesystem path to search for source clips if the media is inaccessible in their original path and if "ignoreFileExtensionsWhenMatching" is True
                                                                          # "sourceClipsFolders": string, list of Media Pool folder objects to search for source clips if the media is not present in current folder
 
-  Export(fileName, exportType, exportSubtype)     --> Bool               # Exports timeline to 'fileName' as per input exportType & exportSubtype format.
+| `Export(fileName, exportType, exportSubtype)`     | `Bool`               | Exports timeline to 'fileName' as per input exportType & exportSubtype format.
                                                                          # Refer to section "Looking up timeline export properties" for information on the parameters.
-  GetSetting(settingName)                         --> string             # Returns value of timeline setting (indicated by settingName : string). Check the section below for more information.
-  SetSetting(settingName, settingValue)           --> Bool               # Sets timeline setting (indicated by settingName : string) to the value (settingValue : string). Check the section below for more information.
-  InsertGeneratorIntoTimeline(generatorName)      --> TimelineItem       # Inserts a generator (indicated by generatorName : string) into the timeline.
-  InsertFusionGeneratorIntoTimeline(generatorName) --> TimelineItem      # Inserts a Fusion generator (indicated by generatorName : string) into the timeline.
-  InsertFusionCompositionIntoTimeline()           --> TimelineItem       # Inserts a Fusion composition into the timeline.
-  InsertOFXGeneratorIntoTimeline(generatorName)   --> TimelineItem       # Inserts an OFX generator (indicated by generatorName : string) into the timeline.
-  InsertTitleIntoTimeline(titleName)              --> TimelineItem       # Inserts a title (indicated by titleName : string) into the timeline.
-  InsertFusionTitleIntoTimeline(titleName)        --> TimelineItem       # Inserts a Fusion title (indicated by titleName : string) into the timeline.
-  GrabStill()                                     --> galleryStill       # Grabs still from the current video clip. Returns a GalleryStill object.
-  GrabAllStills(stillFrameSource)                 --> [galleryStill]     # Grabs stills from all the clips of the timeline at 'stillFrameSource' (1 - First frame, 2 - Middle frame). Returns the list of GalleryStill objects.
-  GetUniqueId()                                   --> string             # Returns a unique ID for the timeline
-  CreateSubtitlesFromAudio({autoCaptionSettings}) --> Bool               # Creates subtitles from audio for the timeline.
+| `GetSetting(settingName)`                         | `string`             | Returns value of timeline setting (indicated by settingName : string). Check the section below for more information.
+| `SetSetting(settingName, settingValue)`           | `Bool`               | Sets timeline setting (indicated by settingName : string) to the value (settingValue : string). Check the section below for more information.
+| `InsertGeneratorIntoTimeline(generatorName)`      | `TimelineItem`       | Inserts a generator (indicated by generatorName : string) into the timeline.
+| `InsertFusionGeneratorIntoTimeline(generatorName)` | `TimelineItem`      | Inserts a Fusion generator (indicated by generatorName : string) into the timeline.
+| `InsertFusionCompositionIntoTimeline()`           | `TimelineItem`       | Inserts a Fusion composition into the timeline.
+| `InsertOFXGeneratorIntoTimeline(generatorName)`   | `TimelineItem`       | Inserts an OFX generator (indicated by generatorName : string) into the timeline.
+| `InsertTitleIntoTimeline(titleName)`              | `TimelineItem`       | Inserts a title (indicated by titleName : string) into the timeline.
+| `InsertFusionTitleIntoTimeline(titleName)`        | `TimelineItem`       | Inserts a Fusion title (indicated by titleName : string) into the timeline.
+| `GrabStill()`                                     | `galleryStill`       | Grabs still from the current video clip. Returns a GalleryStill object.
+| `GrabAllStills(stillFrameSource)`                 | `[galleryStill]`     | Grabs stills from all the clips of the timeline at 'stillFrameSource' (1 - First frame, 2 - Middle frame). Returns the list of GalleryStill objects.
+| `GetUniqueId()`                                   | `string`             | Returns a unique ID for the timeline
+| `CreateSubtitlesFromAudio({autoCaptionSettings})` | `Bool`               | Creates subtitles from audio for the timeline.
                                                                          # Takes in optional dictionary {autoCaptionSettings}. Check 'Auto Caption Settings' subsection below for more information.
                                                                          # Returns True on success, False otherwise.
-  DetectSceneCuts()                               --> Bool               # Detects and makes scene cuts along the timeline. Returns True if successful, False otherwise.
-  ConvertTimelineToStereo()                       --> Bool               # Converts timeline to stereo. Returns True if successful; False otherwise.
-  GetNodeGraph()                                  --> Graph              # Returns the timeline's node graph object.
-  AnalyzeDolbyVision([timelineItems]=[],          --> Bool               # Analyzes Dolby Vision on clips present on the timeline. Returns True if analysis start is successful; False otherwise.
-                     analysisType=NONE)                                  # if [timelineItems] is empty, analysis performed on all items. Else, analysis performed on [timelineItems] only.
+| `DetectSceneCuts()`                               | `Bool`               | Detects and makes scene cuts along the timeline. Returns True if successful, False otherwise.
+| `ConvertTimelineToStereo()`                       | `Bool`               | Converts timeline to stereo. Returns True if successful; False otherwise.
+| `GetNodeGraph()`                                  | `Graph`              | Returns the timeline's node graph object.
+| `AnalyzeDolbyVision([timelineItems]=[], analysisType=NONE)` | `Bool`               | Analyzes Dolby Vision on clips present on the timeline. Returns True if analysis start is successful; False otherwise.
+                                                       # if [timelineItems] is empty, analysis performed on all items. Else, analysis performed on [timelineItems] only.
                                                                          # set analysisType to resolve.DLB_BLEND_SHOTS for blend setting
+| `~~GetItemsInTrack(trackType, index)~~` | `{items...}`       | Returns a dictionary of `TimelineItems` on the video or audio track (based on `trackType`) at the specified index. |
 
-### TimelineItem
-  GetName()                                       --> string             # Returns the item name.
-  GetDuration(subframe_precision)                 --> int/float          # Returns the item duration. Returns fractional frames if subframe_precision is True
-  GetEnd(subframe_precision)                      --> int/float          # Returns the end frame position on the timeline. Returns fractional frames if subframe_precision is True
-  GetSourceEndFrame()                             --> int                # Returns the end frame position of the media pool clip in the timeline clip.
-  GetSourceEndTime()                              --> float              # Returns the end time position of the media pool clip in the timeline clip.
-  GetFusionCompCount()                            --> int                # Returns number of Fusion compositions associated with the timeline item.
-  GetFusionCompByIndex(compIndex)                 --> fusionComp         # Returns the Fusion composition object based on given index. 1 <= compIndex <= timelineItem.GetFusionCompCount()
-  GetFusionCompNameList()                         --> [names...]         # Returns a list of Fusion composition names associated with the timeline item.
-  GetFusionCompByName(compName)                   --> fusionComp         # Returns the Fusion composition object based on given name.
-  GetLeftOffset(subframe_precision)               --> int/float          # Returns the maximum extension by frame for clip from left side. Returns fractional frames if subframe_precision is True
-  GetRightOffset(subframe_precision)              --> int/float          # Returns the maximum extension by frame for clip from right side. Returns fractional frames if subframe_precision is True
-  GetStart(subframe_precision)                    --> int/float          # Returns the start frame position on the timeline. Returns fractional frames if subframe_precision is True
-  GetSourceStartFrame()                           --> int                # Returns the start frame position of the media pool clip in the timeline clip.
-  GetSourceStartTime()                            --> float              # Returns the start time position of the media pool clip in the timeline clip.
-  SetProperty(propertyKey, propertyValue)         --> Bool               # Sets the value of property "propertyKey" to value "propertyValue"
-                                                                         # Refer to "Looking up Timeline item properties" for more information
-  GetProperty(propertyKey)                        --> int/[key:value]    # returns the value of the specified key
-                                                                         # if no key is specified, the method returns a dictionary(python) or table(lua) for all supported keys
-  AddMarker(frameId, color, name, note, duration, --> Bool               # Creates a new marker at given frameId position and with given marker information. 'customData' is optional and helps to attach user specific data to the marker.
-            customData)
-  GetMarkers()                                    --> {markers...}       # Returns a dict (frameId -> {information}) of all markers and dicts with their information.
-                                                                         # Example: a value of {96.0: {'color': 'Green', 'duration': 1.0, 'note': '', 'name': 'Marker 1', 'customData': ''}, ...} indicates a single green marker at clip offset 96
-  GetMarkerByCustomData(customData)               --> {markers...}       # Returns marker {information} for the first matching marker with specified customData.
-  UpdateMarkerCustomData(frameId, customData)     --> Bool               # Updates customData (string) for the marker at given frameId position. CustomData is not exposed via UI and is useful for scripting developer to attach any user specific data to markers.
-  GetMarkerCustomData(frameId)                    --> string             # Returns customData string for the marker at given frameId position.
-  DeleteMarkersByColor(color)                     --> Bool               # Delete all markers of the specified color from the timeline item. "All" as argument deletes all color markers.
-  DeleteMarkerAtFrame(frameNum)                   --> Bool               # Delete marker at frame number from the timeline item.
-  DeleteMarkerByCustomData(customData)            --> Bool               # Delete first matching marker with specified customData.
-  AddFlag(color)                                  --> Bool               # Adds a flag with given color (string).
-  GetFlagList()                                   --> [colors...]        # Returns a list of flag colors assigned to the item.
-  ClearFlags(color)                               --> Bool               # Clear flags of the specified color. An "All" argument is supported to clear all flags.
-  GetClipColor()                                  --> string             # Returns the item color as a string.
-  SetClipColor(colorName)                         --> Bool               # Sets the item color based on the colorName (string).
-  ClearClipColor()                                --> Bool               # Clears the item color.
-  AddFusionComp()                                 --> fusionComp         # Adds a new Fusion composition associated with the timeline item.
-  ImportFusionComp(path)                          --> fusionComp         # Imports a Fusion composition from given file path by creating and adding a new composition for the item.
-  ExportFusionComp(path, compIndex)               --> Bool               # Exports the Fusion composition based on given index to the path provided.
-  DeleteFusionCompByName(compName)                --> Bool               # Deletes the named Fusion composition.
-  LoadFusionCompByName(compName)                  --> fusionComp         # Loads the named Fusion composition as the active composition.
-  RenameFusionCompByName(oldName, newName)        --> Bool               # Renames the Fusion composition identified by oldName.
-  AddVersion(versionName, versionType)            --> Bool               # Adds a new color version for a video clip based on versionType (0 - local, 1 - remote).
-  GetCurrentVersion()                             --> {versionName...}   # Returns the current version of the video clip. The returned value will have the keys versionName and versionType(0 - local, 1 - remote).
-  DeleteVersionByName(versionName, versionType)   --> Bool               # Deletes a color version by name and versionType (0 - local, 1 - remote).
-  LoadVersionByName(versionName, versionType)     --> Bool               # Loads a named color version as the active version. versionType: 0 - local, 1 - remote.
-  RenameVersionByName(oldName, newName, versionType)--> Bool             # Renames the color version identified by oldName and versionType (0 - local, 1 - remote).
-  GetVersionNameList(versionType)                 --> [names...]         # Returns a list of all color versions for the given versionType (0 - local, 1 - remote).
-  GetMediaPoolItem()                              --> MediaPoolItem      # Returns the media pool item corresponding to the timeline item if one exists.
-  GetStereoConvergenceValues()                    --> {keyframes...}     # Returns a dict (offset -> value) of keyframe offsets and respective convergence values.
-  GetStereoLeftFloatingWindowParams()             --> {keyframes...}     # For the LEFT eye -> returns a dict (offset -> dict) of keyframe offsets and respective floating window params. Value at particular offset includes the left, right, top and bottom floating window values.
-  GetStereoRightFloatingWindowParams()            --> {keyframes...}     # For the RIGHT eye -> returns a dict (offset -> dict) of keyframe offsets and respective floating window params. Value at particular offset includes the left, right, top and bottom floating window values.
-  ApplyArriCdlLut()                               --> Bool               # Applies ARRI CDL and LUT. Returns True if successful, False otherwise.
-  SetCDL([CDL map])                               --> Bool               # Keys of map are: "NodeIndex", "Slope", "Offset", "Power", "Saturation", where 1 <= NodeIndex <= total number of nodes.
-                                                                         # Example python code - SetCDL({"NodeIndex" : "1", "Slope" : "0.5 0.4 0.2", "Offset" : "0.4 0.3 0.2", "Power" : "0.6 0.7 0.8", "Saturation" : "0.65"})
-  AddTake(mediaPoolItem, startFrame, endFrame)    --> Bool               # Adds mediaPoolItem as a new take. Initializes a take selector for the timeline item if needed. By default, the full clip extents is added. startFrame (int) and endFrame (int) are optional arguments used to specify the extents.
-  GetSelectedTakeIndex()                          --> int                # Returns the index of the currently selected take, or 0 if the clip is not a take selector.
-  GetTakesCount()                                 --> int                # Returns the number of takes in take selector, or 0 if the clip is not a take selector.
-  GetTakeByIndex(idx)                             --> {takeInfo...}      # Returns a dict (keys "startFrame", "endFrame" and "mediaPoolItem") with take info for specified index.
-  DeleteTakeByIndex(idx)                          --> Bool               # Deletes a take by index, 1 <= idx <= number of takes.
-  SelectTakeByIndex(idx)                          --> Bool               # Selects a take by index, 1 <= idx <= number of takes.
-  FinalizeTake()                                  --> Bool               # Finalizes take selection.
-  CopyGrades([tgtTimelineItems])                  --> Bool               # Copies the current node stack layer grade to the same layer for each item in tgtTimelineItems. Returns True if successful.
-  SetClipEnabled(Bool)                            --> Bool               # Sets clip enabled based on argument.
-  GetClipEnabled()                                --> Bool               # Gets clip enabled status.
-  UpdateSidecar()                                 --> Bool               # Updates sidecar file for BRAW clips or RMD file for R3D clips.
-  GetUniqueId()                                   --> string             # Returns a unique ID for the timeline item
-  LoadBurnInPreset(presetName)                    --> Bool               # Loads user defined data burn in preset for clip when supplied presetName (string). Returns true if successful.
-  CreateMagicMask(mode)                           --> Bool               # Returns True if magic mask was created successfully, False otherwise. mode can "F" (forward), "B" (backward), or "BI" (bidirection)
-  RegenerateMagicMask()                           --> Bool               # Returns True if magic mask was regenerated successfully, False otherwise.
-  Stabilize()                                     --> Bool               # Returns True if stabilization was successful, False otherwise
-  SmartReframe()                                  --> Bool               # Performs Smart Reframe. Returns True if successful, False otherwise.
-  GetNodeGraph(layerIdx)                          --> Graph              # Returns the clip's node graph object at layerIdx (int, optional). Returns the first layer if layerIdx is skipped. 1 <= layerIdx <= project.GetSetting("nodeStackLayers").
-  GetColorGroup()                                 --> ColorGroup         # Returns the clip's color group if one exists.
-  AssignToColorGroup(ColorGroup)                  --> Bool               # Returns True if TiItem to successfully assigned to given ColorGroup. ColorGroup must be an existing group in the current project.
-  RemoveFromColorGroup()                          --> Bool               # Returns True if the TiItem is successfully removed from the ColorGroup it is in.
-  ExportLUT(exportType, path)                     --> Bool               # Exports LUTs from tiItem referring to value passed in 'exportType' (enum) for LUT size. Refer to. 'ExportLUT notes' section for possible values.
-                                                                         # Saves generated LUT in the provided 'path' (string). 'path' should include the intended file name.
-                                                                         # If an empty or incorrect extension is provided, the appropriate extension (.cube/.vlt) will be appended at the end of the path.
-  GetLinkedItems()                                --> [TimelineItems]    # Returns a list of linked timeline items.
-  GetTrackTypeAndIndex()                          --> [trackType, trackIndex] # Returns a list of two values that correspond to the TimelineItem's trackType (string) and trackIndex (int) respectively.
-                                                                           # trackType is one of {"audio", "video", "subtitle"}
-                                                                           # 1 <= trackIndex <= Timeline.GetTrackCount(trackType)
-  GetSourceAudioChannelMapping()                 --> json formatted string # Returns a string with TimelineItem's audio mapping information. Check 'Audio Mapping' section below for more information.
+### `TimelineItem` Methods
 
-### Gallery
-  GetAlbumName(galleryStillAlbum)                 --> string             # Returns the name of the GalleryStillAlbum object 'galleryStillAlbum'.
-  SetAlbumName(galleryStillAlbum, albumName)      --> Bool               # Sets the name of the GalleryStillAlbum object 'galleryStillAlbum' to 'albumName'.
-  GetCurrentStillAlbum()                          --> galleryStillAlbum  # Returns current album as a GalleryStillAlbum object.
-  SetCurrentStillAlbum(galleryStillAlbum)         --> Bool               # Sets current album to GalleryStillAlbum object 'galleryStillAlbum'.
-  GetGalleryStillAlbums()                         --> [galleryStillAlbum] # Returns the gallery albums as a list of GalleryStillAlbum objects.
+| Method                                    | Return Type            | Comment                                                                                                                                                                                                                                                                                                                 |
+|-------------------------------------------|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `GetName()`                                | `string`               | Returns the item name.                                                                                                                                                                                                                                                                                                  |
+| `GetDuration(subframe_precision)`          | `int/float`            | Returns the item duration. Returns fractional frames if `subframe_precision` is `True`.                                                                                                                                                                                                                                 |
+| `GetEnd(subframe_precision)`               | `int/float`            | Returns the end frame position on the timeline. Returns fractional frames if `subframe_precision` is `True`.                                                                                                                                                                                                            |
+| `GetSourceEndFrame()`                      | `int`                  | Returns the end frame position of the media pool clip in the timeline clip.                                                                                                                                                                                                                                             |
+| `GetSourceEndTime()`                       | `float`                | Returns the end time position of the media pool clip in the timeline clip.                                                                                                                                                                                                                                              |
+| `GetFusionCompCount()`                     | `int`                  | Returns the number of Fusion compositions associated with the timeline item.                                                                                                                                                                                                                                            |
+| `GetFusionCompByIndex(compIndex)`          | `fusionComp`           | Returns the Fusion composition object based on a given index. `1 <= compIndex <= timelineItem.GetFusionCompCount()`.                                                                                                                                                                                                    |
+| `GetFusionCompNameList()`                  | `[names...]`           | Returns a list of Fusion composition names associated with the timeline item.                                                                                                                                                                                                                                           |
+| `GetFusionCompByName(compName)`            | `fusionComp`           | Returns the Fusion composition object based on a given name.                                                                                                                                                                                                                                                            |
+| `GetLeftOffset(subframe_precision)`        | `int/float`            | Returns the maximum extension by frame for clip from the left side. Returns fractional frames if `subframe_precision` is `True`.                                                                                                                                                                                        |
+| `GetRightOffset(subframe_precision)`       | `int/float`            | Returns the maximum extension by frame for clip from the right side. Returns fractional frames if `subframe_precision` is `True`.                                                                                                                                                                                       |
+| `GetStart(subframe_precision)`             | `int/float`            | Returns the start frame position on the timeline. Returns fractional frames if `subframe_precision` is `True`.                                                                                                                                                                                                          |
+| `GetSourceStartFrame()`                    | `int`                  | Returns the start frame position of the media pool clip in the timeline clip.                                                                                                                                                                                                                                           |
+| `GetSourceStartTime()`                     | `float`                | Returns the start time position of the media pool clip in the timeline clip.                                                                                                                                                                                                                                            |
+| `SetProperty(propertyKey, propertyValue)`   | `Bool`                 | Sets the value of the property "propertyKey" to the value "propertyValue". Refer to "Looking up Timeline item properties" for more information.                                                                                                                                                                        |
+| `GetProperty(propertyKey)`                 | `int/[key:value]`      | Returns the value of the specified key. If no key is specified, the method returns a dictionary (Python) or table (Lua) for all supported keys.                                                                                                                                                                        |
+| `AddMarker(frameId, color, name, note, duration, customData)` | `Bool` | Creates a new marker at the given `frameId` position with the specified marker information. `customData` is optional and helps to attach user-specific data to the marker.                                                                                                                                              |
+| `GetMarkers()`                             | `{markers...}`         | Returns a dictionary (`frameId -> {information}`) of all markers and dictionaries with their information. Example: `{96.0: {'color': 'Green', 'duration': 1.0, 'note': '', 'name': 'Marker 1', 'customData': ''}}` indicates a single green marker at clip offset `96`.                                             |
+| `GetMarkerByCustomData(customData)`        | `{markers...}`         | Returns marker `{information}` for the first matching marker with the specified `customData`.                                                                                                                                                                                                                           |
+| `UpdateMarkerCustomData(frameId, customData)` | `Bool`              | Updates `customData` (string) for the marker at the given `frameId` position. `customData` is not exposed via UI and is useful for scripting developers to attach user-specific data to markers.                                                                                                                      |
+| `GetMarkerCustomData(frameId)`             | `string`               | Returns the `customData` string for the marker at the given `frameId` position.                                                                                                                                                                                                                                         |
+| `DeleteMarkersByColor(color)`              | `Bool`                 | Deletes all markers of the specified color from the timeline item. `"All"` as an argument deletes all color markers.                                                                                                                                                                                                   |
+| `DeleteMarkerAtFrame(frameNum)`            | `Bool`                 | Deletes the marker at the specified frame number from the timeline item.                                                                                                                                                                                                                                                |
+| `DeleteMarkerByCustomData(customData)`     | `Bool`                 | Deletes the first matching marker with the specified `customData`.                                                                                                                                                                                                                                                      |
+| `AddFlag(color)`                           | `Bool`                 | Adds a flag with the specified color (string).                                                                                                                                                                                                                                                                          |
+| `GetFlagList()`                            | `[colors...]`          | Returns a list of flag colors assigned to the item.                                                                                                                                                                                                                                                                     |
+| `ClearFlags(color)`                        | `Bool`                 | Clears flags of the specified color. An `"All"` argument is supported to clear all flags.                                                                                                                                                                                                                               |
+| `GetClipColor()`                           | `string`               | Returns the item color as a string.                                                                                                                                                                                                                                                                                     |
+| `SetClipColor(colorName)`                  | `Bool`                 | Sets the item color based on the `colorName` (string).                                                                                                                                                                                                                                                                  |
+| `ClearClipColor()`                         | `Bool`                 | Clears the item color.                                                                                                                                                                                                                                                                                                  |
+| `AddFusionComp()`                          | `fusionComp`           | Adds a new Fusion composition associated with the timeline item.                                                                                                                                                                                                                                                        |
+| `ImportFusionComp(path)`                   | `fusionComp`           | Imports a Fusion composition from the specified file path by creating and adding a new composition for the item.                                                                                                                                                                                                        |
+| `ExportFusionComp(path, compIndex)`        | `Bool`                 | Exports the Fusion composition based on the specified index to the specified path.                                                                                                                                                                                                                                      |
+| `DeleteFusionCompByName(compName)`         | `Bool`                 | Deletes the named Fusion composition.                                                                                                                                                                                                                                                                                   |
+| `LoadFusionCompByName(compName)`           | `fusionComp`           | Loads the named Fusion composition as the active composition.                                                                                                                                                                                                                                                           |
+| `RenameFusionCompByName(oldName, newName)` | `Bool`                 | Renames the Fusion composition identified by `oldName`.                                                                                                                                                                                                                                                                 |
+| `AddVersion(versionName, versionType)`     | `Bool`                 | Adds a new color version for a video clip based on `versionType` (`0` - local, `1` - remote).                                                                                                                                                                                                                           |
+| `GetCurrentVersion()`                      | `{versionName...}`     | Returns the current version of the video clip. The returned value will have the keys `versionName` and `versionType` (`0` - local, `1` - remote).                                                                                                                                                                      |
+| `DeleteVersionByName(versionName, versionType)` | `Bool`             | Deletes a color version by name and `versionType` (`0` - local, `1` - remote).                                                                                                                                                                                                                                          |
+| `LoadVersionByName(versionName, versionType)` | `Bool`             | Loads a named color version as the active version. `versionType`: `0` - local, `1` - remote.                                                                                                                                                                                                                            |
+| `RenameVersionByName(oldName, newName, versionType)` | `Bool`         | Renames the color version identified by `oldName` and `versionType` (`0` - local, `1` - remote).                                                                                                                                                                                                                        |
+| `GetVersionNameList(versionType)`          | `[names...]`           | Returns a list of all color versions for the specified `versionType` (`0` - local, `1` - remote).                                                                                                                                                                                                                       |
+| `GetMediaPoolItem()`                       | `MediaPoolItem`        | Returns the media pool item corresponding to the timeline item, if one exists.                                                                                                                                                                                                                                          |
+| `GetStereoConvergenceValues()`             | `{keyframes...}`       | Returns a dictionary (`offset -> value`) of keyframe offsets and respective convergence values.                                                                                                                                                                                                                         |
+| `GetStereoLeftFloatingWindowParams()`      | `{keyframes...}`       | For the left eye, returns a dictionary (`offset -> dict`) of keyframe offsets and respective floating window params. The value at a particular offset includes the left, right, top, and bottom floating window values.                                                                                                |
+| `GetStereoRightFloatingWindowParams()`     | `{keyframes...}`       | For the right eye, returns a dictionary (`offset -> dict`) of keyframe offsets and respective floating window params. The value at a particular offset includes the left, right, top, and bottom floating window values.                                                                                               |
+| `ApplyArriCdlLut()`                        | `Bool`                 | Applies ARRI CDL and LUT. Returns `True` if successful, `False` otherwise.                                                                                                                                                                                                                                              |
+| `SetCDL([CDL map])`                        | `Bool`                 | Sets CDL values using a map with keys: `"NodeIndex"`, `"Slope"`, `"Offset"`, `"Power"`, and `"Saturation"`. Example: `SetCDL({"NodeIndex": "1", "Slope": "0.5 0.4 0.2", "Offset": "0.4 0.3 0.2", "Power": "0.6 0.7 0.8", "Saturation": "0.65"})`.                                                                         |
+| `AddTake(mediaPoolItem, startFrame, endFrame)` | `Bool`             | Adds `mediaPoolItem` as a new take. Initializes a take selector for the timeline item if needed. By default, the full clip extents are added. `startFrame` (int) and `endFrame` (int) are optional arguments to specify the extents.                                                                                   |
+| `GetSelectedTakeIndex()`                   | `int`                  | Returns the index of the currently selected take, or `0` if the clip is not a take selector.                                                                                                                                                                                                                            |
+| `GetTakesCount()`                          | `int`                  | Returns the number of takes in the take selector, or `0` if the clip is not a take selector.                                                                                                                                                                                                                            |
+| `GetTakeByIndex(idx)`                      | `{takeInfo...}`        | Returns a dictionary (keys `"startFrame"`, `"endFrame"`, and `"mediaPoolItem"`) with take info for the specified index.                                                                                                                                                                                                |
+| `DeleteTakeByIndex(idx)`                   | `Bool`                 | Deletes a take by index, where `1 <= idx <= number of takes`.                                                                                                                                                                                                                                                           |
+| `SelectTakeByIndex(idx)`                   | `Bool`                 | Selects a take by index, where `1 <= idx <= number of takes`.                                                                                                                                                                                                                                                           |
+| `FinalizeTake()`                           | `Bool`                 | Finalizes take selection.                                                                                                                                                                                                                                                                                               |
+| `CopyGrades([tgtTimelineItems])`           | `Bool`                 | Copies the current node stack layer grade to the same layer for each item in `tgtTimelineItems`. Returns `True` if successful.                                                                                                                                                                                          |
+| `SetClipEnabled(Bool)`                     | `Bool`                 | Sets the clip enabled status based on the argument.                                                                                                                                                                                                                                                                     |
+| `GetClipEnabled()`                         | `Bool`                 | Gets the clip enabled status.                                                                                                                                                                                                                                                                                           |
+| `UpdateSidecar()`                          | `Bool`                 | Updates the sidecar file for BRAW clips or the RMD file for R3D clips.                                                                                                                                                                                                                                                 |
+| `GetUniqueId()`                            | `string`               | Returns a unique ID for the timeline item.                                                                                                                                                                                                                                                                              |
+| `LoadBurnInPreset(presetName)`             | `Bool`                 | Loads a user-defined data burn-in preset for the clip with the specified `presetName` (string). Returns `True` if successful.                                                                                                                                                                                           |
+| `CreateMagicMask(mode)`                    | `Bool`                 | Returns `True` if the magic mask was created successfully, `False` otherwise. `mode` can be `"F"` (forward), `"B"` (backward), or `"BI"` (bidirectional).                                                                                                                                                              |
+| `RegenerateMagicMask()`                    | `Bool`                 | Returns `True` if the magic mask was regenerated successfully, `False` otherwise.                                                                                                                                                                                                                                       |
+| `Stabilize()`                              | `Bool`                 | Returns `True` if stabilization was successful, `False` otherwise.                                                                                                                                                                                                                                                      |
+| `SmartReframe()`                           | `Bool`                 | Performs Smart Reframe. Returns `True` if successful, `False` otherwise.                                                                                                                                                                                                                                                |
+| `GetNodeGraph(layerIdx)`                   | `Graph`                | Returns the clip's node graph object at `layerIdx` (int, optional). Returns the first layer if `layerIdx` is skipped. `1 <= layerIdx <= project.GetSetting("nodeStackLayers")`.                                                                                                                                        |
+| `GetColorGroup()`                          | `ColorGroup`           | Returns the clip's color group, if one exists.                                                                                                                                                                                                                                                                          |
+| `AssignToColorGroup(ColorGroup)`           | `Bool`                 | Returns `True` if the TimelineItem was successfully assigned to the given `ColorGroup`. `ColorGroup` must be an existing group in the current project.                                                                                                                                                                 |
+| `RemoveFromColorGroup()`                   | `Bool`                 | Returns `True` if the TimelineItem was successfully removed from the `ColorGroup` it is in.                                                                                                                                                                                                                             |
+| `ExportLUT(exportType, path)`              | `Bool`                 | Exports LUTs from the TimelineItem based on the value passed in `exportType` (enum) for LUT size. Saves the generated LUT in the provided `path` (string), which should include the intended file name. If an empty or incorrect extension is provided, the appropriate extension (.cube/.vlt) will be appended.    |
+| `GetLinkedItems()`                         | `[TimelineItems]`      | Returns a list of linked timeline items.                                                                                                                                                                                                                                                                                |
+| `GetTrackTypeAndIndex()`                   | `[trackType, trackIndex]` | Returns a list of two values that correspond to the TimelineItem's `trackType` (string) and `trackIndex` (int) respectively. `trackType` is one of `"audio"`, `"video"`, `"subtitle"`, and `1 <= trackIndex <= Timeline.GetTrackCount(trackType)`.                               |
+| `GetSourceAudioChannelMapping()`           | `json formatted string` | Returns a string with the TimelineItem's audio mapping information.                                                                                                                                                                                                                                                    |
+| `~~GetFusionCompNames()~~`            | `{names...}`         | Returns a dictionary of Fusion composition names associated with the timeline item.           |
+| `~~GetFlags()~~`                      | `{colors...}`        | Returns a dictionary of flag colors assigned to the item.                                     |
+| `~~GetVersionNames(versionType)~~`    | `{names...}`         | Returns a dictionary of version names by the specified `versionType` (0 for local, 1 for remote). |
+| `~~GetNumNodes()~~`                   | `int`                | Returns the number of nodes in the current graph for the timeline item.                       |
+| `~~SetLUT(nodeIndex, lutPath)~~`      | `Bool`               | Sets the LUT on the specified node by `nodeIndex`. `lutPath` can be absolute or relative. The operation is successful if the LUT path is valid. |
+| `~~GetLUT(nodeIndex)~~`               | `string`             | Gets the relative LUT path based on the specified `nodeIndex`.                                |
+| `~~GetNodeLabel(nodeIndex)~~`         | `string`             | Returns the label of the node at `nodeIndex`.                                                 |
 
-### GalleryStillAlbum
-  GetStills()                                     --> [galleryStill]     # Returns the list of GalleryStill objects in the album.
-  GetLabel(galleryStill)                          --> string             # Returns the label of the galleryStill.
-  SetLabel(galleryStill, label)                   --> Bool               # Sets the new 'label' to GalleryStill object 'galleryStill'.
-  ImportStills([filePaths])                       --> Bool               # Imports GalleryStill from each filePath in [filePaths] list. True if at least one still is imported successfully. False otherwise.
-  ExportStills([galleryStill], folderPath, filePrefix, format) --> Bool  # Exports list of GalleryStill objects '[galleryStill]' to directory 'folderPath', with filename prefix 'filePrefix', using file format 'format' (supported formats: dpx, cin, tif, jpg, png, ppm, bmp, xpm, drx).
-  DeleteStills([galleryStill])                    --> Bool               # Deletes specified list of GalleryStill objects '[galleryStill]'.
 
-### GalleryStill                                                         
+### `Gallery` Methods
+
+| Method                                    | Return Type            | Comment                                                                                                                                                 |
+|-------------------------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `GetAlbumName(galleryStillAlbum)`          | `string`               | Returns the name of the specified `GalleryStillAlbum` object `galleryStillAlbum`.                                                                       |
+| `SetAlbumName(galleryStillAlbum, albumName)` | `Bool`              | Sets the name of the specified `GalleryStillAlbum` object `galleryStillAlbum` to the new name `albumName`.                                              |
+| `GetCurrentStillAlbum()`                   | `GalleryStillAlbum`    | Returns the current album as a `GalleryStillAlbum` object.                                                                                              |
+| `SetCurrentStillAlbum(galleryStillAlbum)`   | `Bool`                 | Sets the current album to the specified `GalleryStillAlbum` object `galleryStillAlbum`.                                                                 |
+| `GetGalleryStillAlbums()`                  | `[GalleryStillAlbum]`  | Returns a list of all gallery albums as `GalleryStillAlbum` objects.                                                                                    |
+
+
+### `GalleryStillAlbum` Methods
+
+| Method                                           | Return Type        | Comment                                                                                                                                                                                                                     |
+|--------------------------------------------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `GetStills()`                                    | `[GalleryStill]`   | Returns the list of `GalleryStill` objects in the album.                                                                                                                                                                   |
+| `GetLabel(galleryStill)`                         | `string`           | Returns the label of the specified `galleryStill`.                                                                                                                                                                         |
+| `SetLabel(galleryStill, label)`                  | `Bool`             | Sets the new `label` for the specified `GalleryStill` object `galleryStill`.                                                                                                                                               |
+| `ImportStills([filePaths])`                      | `Bool`             | Imports a `GalleryStill` from each `filePath` in the `filePaths` list. Returns `True` if at least one still is imported successfully, `False` otherwise.                                                                   |
+| `ExportStills([galleryStill], folderPath, filePrefix, format)` | `Bool` | Exports the specified list of `GalleryStill` objects `[galleryStill]` to the directory `folderPath`, with filename prefix `filePrefix`, using file format `format` (supported formats: dpx, cin, tif, jpg, png, ppm, bmp, xpm, drx). |
+| `DeleteStills([galleryStill])`                   | `Bool`             | Deletes the specified list of `GalleryStill` objects `[galleryStill]`.                                                                                                                                                     |
+
+
+### GalleryStill
+
 This class does not provide any API functions but the object type is used by functions in other classes.
 
-### Graph
-  GetNumNodes()                                   --> int                # Returns the number of nodes in the graph
-  SetLUT(nodeIndex, lutPath)                      --> Bool               # Sets LUT on the node mapping the node index provided, 1 <= nodeIndex <= self.GetNumNodes().
-                                                                         # The lutPath can be an absolute path, or a relative path (based off custom LUT paths or the master LUT path).
-                                                                         # The operation is successful for valid lut paths that Resolve has already discovered (see Project.RefreshLUTList).
-  GetLUT(nodeIndex)                               --> String             # Gets relative LUT path based on the node index provided, 1 <= nodeIndex <= total number of nodes.
-  GetNodeLabel(nodeIndex)                         --> string             # Returns the label of the node at nodeIndex.
-  GetToolsInNode(nodeIndex)                       --> [toolsList]        # Returns toolsList (list of strings) of the tools used in the node indicated by given nodeIndex (int).
-  SetNodeEnabled(nodeIndex, isEnabled)            --> Bool               # Sets the node at the given nodeIndex (int) to isEnabled (bool).
-                                                                         # 1 <= nodeIndex <= self.GetNumNodes().
+### `Graph` Methods
 
-### ColorGroup
-  GetName()                                       --> String             # Returns the name (string) of the ColorGroup.
-  SetName(groupName)                              --> Bool               # Renames ColorGroup to groupName (string).
-  GetClipsInTimeline(Timeline=CurrTimeline)       --> [TimelineItem]     # Returns a list of TimelineItem that are in colorGroup in the given Timeline. Timeline is Current Timeline by default.
-  GetPreClipNodeGraph()                           --> Graph              # Returns the ColorGroup Pre-clip graph.
-  GetPostClipNodeGraph()                          --> Graph              # Returns the ColorGroup Post-clip graph.
+| Method                                      | Return Type          | Comment                                                                                                                                                                                                                                         |
+|---------------------------------------------|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `GetNumNodes()`                             | `int`                | Returns the number of nodes in the graph.                                                                                                                                                                                                      |
+| `SetLUT(nodeIndex, lutPath)`                | `Bool`               | Sets the LUT on the node at the specified `nodeIndex`. Valid indices are `1 <= nodeIndex <= self.GetNumNodes()`. `lutPath` can be an absolute or relative path (relative paths are based on custom or master LUT paths discovered by Resolve). |
+| `GetLUT(nodeIndex)`                         | `string`             | Gets the relative LUT path for the node at the specified `nodeIndex`, where `1 <= nodeIndex <= total number of nodes`.                                                                                                                         |
+| `GetNodeLabel(nodeIndex)`                   | `string`             | Returns the label of the node at the specified `nodeIndex`.                                                                                                                                                                                    |
+| `GetToolsInNode(nodeIndex)`                 | `[string]`           | Returns a list of tools used in the node specified by `nodeIndex`.                                                                                                                                                                             |
+| `SetNodeEnabled(nodeIndex, isEnabled)`      | `Bool`               | Enables or disables the node at the specified `nodeIndex` based on the `isEnabled` boolean value. Valid indices are `1 <= nodeIndex <= self.GetNumNodes()`.                                                                                    |
+
+
+### `ColorGroup` Methods
+
+| Method                                    | Return Type          | Comment                                                                                                                       |
+|-------------------------------------------|-----------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `GetName()`                                | `string`             | Returns the name of the `ColorGroup`.                                                                                         |
+| `SetName(groupName)`                       | `Bool`               | Renames the `ColorGroup` to the specified `groupName`.                                                                        |
+| `GetClipsInTimeline(Timeline=CurrTimeline)` | `[TimelineItem]`    | Returns a list of `TimelineItem` objects in the `ColorGroup` within the specified `Timeline`. Defaults to the current timeline. |
+| `GetPreClipNodeGraph()`                    | `Graph`              | Returns the `ColorGroup` Pre-clip node graph.                                                                                 |
+| `GetPostClipNodeGraph()`                   | `Graph`              | Returns the `ColorGroup` Post-clip node graph.                                                                                |
+
 
 List and Dict Data Structures
 -----------------------------
@@ -888,55 +935,15 @@ Supported values for 'exportType' (enum) are:
     - resolve.EXPORT_LUT_65PTCUBE
     - resolve.EXPORT_LUT_PANASONICVLUT
 
-Deprecated Resolve API Functions
---------------------------------
-The following API functions are deprecated.
-
-ProjectManager
-  GetProjectsInCurrentFolder()                    --> {project names...} # Returns a dict of project names in current folder.
-  GetFoldersInCurrentFolder()                     --> {folder names...}  # Returns a dict of folder names in current folder.
-
-Project
-  GetPresets()                                    --> {presets...}       # Returns a dict of presets and their information.
-  GetRenderJobs()                                 --> {render jobs...}   # Returns a dict of render jobs and their information.
-  GetRenderPresets()                              --> {presets...}       # Returns a dict of render presets and their information.
-
-MediaStorage
-  GetMountedVolumes()                             --> {paths...}         # Returns a dict of folder paths corresponding to mounted volumes displayed in Resolve’s Media Storage.
-  GetSubFolders(folderPath)                       --> {paths...}         # Returns a dict of folder paths in the given absolute folder path.
-  GetFiles(folderPath)                            --> {paths...}         # Returns a dict of media and file listings in the given absolute folder path. Note that media listings may be logically consolidated entries.
-  AddItemsToMediaPool(item1, item2, ...)          --> {clips...}         # Adds specified file/folder paths from Media Storage into current Media Pool folder. Input is one or more file/folder paths. Returns a dict of the MediaPoolItems created.
-  AddItemsToMediaPool([items...])                 --> {clips...}         # Adds specified file/folder paths from Media Storage into current Media Pool folder. Input is an array of file/folder paths. Returns a dict of the MediaPoolItems created.
-
-Folder
-  GetClips()                                      --> {clips...}         # Returns a dict of clips (items) within the folder.
-  GetSubFolders()                                 --> {folders...}       # Returns a dict of subfolders in the folder.
-
-MediaPoolItem
-  GetFlags()                                      --> {colors...}        # Returns a dict of flag colors assigned to the item.
-
-Timeline
-  GetItemsInTrack(trackType, index)               --> {items...}         # Returns a dict of Timeline items on the video or audio track (based on trackType) at specified
-
-TimelineItem
-  GetFusionCompNames()                            --> {names...}         # Returns a dict of Fusion composition names associated with the timeline item.
-  GetFlags()                                      --> {colors...}        # Returns a dict of flag colors assigned to the item.
-  GetVersionNames(versionType)                    --> {names...}         # Returns a dict of version names by provided versionType: 0 - local, 1 - remote.
-  GetNumNodes()                                   --> int                # Returns the number of nodes in the current graph for the timeline item
-  SetLUT(nodeIndex, lutPath)                      --> Bool               # Sets LUT on the node mapping the node index provided, 1 <= nodeIndex <= total number of nodes.
-                                                                         # The lutPath can be an absolute path, or a relative path (based off custom LUT paths or the master LUT path).
-                                                                         # The operation is successful for valid lut paths that Resolve has already discovered (see Project.RefreshLUTList).
-  GetLUT(nodeIndex)                               --> String             # Gets relative LUT path based on the node index provided, 1 <= nodeIndex <= total number of nodes.
-  GetNodeLabel(nodeIndex)                         --> string             # Returns the label of the node at nodeIndex.
-
 Unsupported Resolve API Functions
 ---------------------------------
 The following API (functions and parameters) are no longer supported. Use job IDs instead of indices.
 
-Project
-  StartRendering(index1, index2, ...)             --> Bool               # Please use unique job ids (string) instead of indices.
-  StartRendering([idxs...])                       --> Bool               # Please use unique job ids (string) instead of indices.
-  DeleteRenderJobByIndex(idx)                     --> Bool               # Please use unique job ids (string) instead of indices.
-  GetRenderJobStatus(idx)                         --> {status info}      # Please use unique job ids (string) instead of indices.
-  GetSetting and SetSetting                       --> {}                 # settingName videoMonitorUseRec601For422SDI is now replaced with videoMonitorUseMatrixOverrideFor422SDI and videoMonitorMatrixOverrideFor422SDI.
+### Project
+
+  StartRendering(index1, index2, ...)             | Bool               | Please use unique job ids (string) instead of indices.
+  StartRendering([idxs...])                       | Bool               | Please use unique job ids (string) instead of indices.
+  DeleteRenderJobByIndex(idx)                     | Bool               | Please use unique job ids (string) instead of indices.
+  GetRenderJobStatus(idx)                         | {status info}      | Please use unique job ids (string) instead of indices.
+  GetSetting and SetSetting                       | {}                 | settingName videoMonitorUseRec601For422SDI is now replaced with videoMonitorUseMatrixOverrideFor422SDI and videoMonitorMatrixOverrideFor422SDI.
                                                                          # settingName perfProxyMediaOn is now replaced with perfProxyMediaMode which takes values 0 - disabled, 1 - when available, 2 - when source not available.
