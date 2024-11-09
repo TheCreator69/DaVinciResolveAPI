@@ -1,11 +1,15 @@
 # DaVinci Resolve - Unofficial Scripting API Reference
 
-Last Updated: 3 October 2024
-----------------------------
-In this package, you will find a brief introduction to the Scripting API for DaVinci Resolve Studio. Apart from this README.txt file, this package contains folders containing the basic import
-modules for scripting access (DaVinciResolve.py) and some representative examples.
+This document is a formatted copy of the official BlackmagicDesign DaVinci Resolve scripting documentation.
 
-From v16.2.0 onwards, the nodeIndex parameters accepted by SetLUT() and SetCDL() are 1-based instead of 0-based, i.e. 1 <= nodeIndex <= total number of nodes.
+WARNING: Keep in mind that this document might contain errors and might not be up to date with the current Resolve version. If in doubt, always consult the official Resolve documentation provided by BlackmagicDesign.
+
+*Last Updated: 3 October 2024*
+
+In this package, you will find a brief introduction to the Scripting API for DaVinci Resolve Studio. Apart from this README.txt file, this package contains folders containing the basic import
+modules for scripting access (`DaVinciResolve.py`) and some representative examples.
+
+From v16.2.0 onwards, the `nodeIndex` parameters accepted by `SetLUT()` and `SetCDL()` are 1-based instead of 0-based, i.e. 1 <= `nodeIndex` <= total number of nodes.
 
 Overview
 --------
@@ -46,9 +50,11 @@ You may need to set the these environment variables to allow for your Python ins
 
 As with Fusion scripts, Resolve scripts can also be invoked via the menu and the Console.
 
-On startup, DaVinci Resolve scans the subfolders in the directories shown below and enumerates the scripts found in the Workspace application menu under Scripts.
-Place your script under Utility to be listed in all pages, under Comp or Tool to be available in the Fusion page or under folders for individual pages (Edit, Color or Deliver). Scripts under Deliver are additionally listed under render jobs.
+On startup, DaVinci Resolve scans the subfolders in the directories shown below and enumerates the scripts found in the Workspace application menu under Scripts.  
+Place your script under Utility to be listed in all pages, under Comp or Tool to be available in the Fusion page or under folders for individual pages (Edit, Color or Deliver).  
+Scripts under Deliver are additionally listed under render jobs.  
 Placing your script here and invoking it from the menu is the easiest way to use scripts.
+
     Mac OS X:
       - All users: /Library/Application Support/Blackmagic Design/DaVinci Resolve/Fusion/Scripts
       - Specific user:  /Users/<UserName>/Library/Application Support/Blackmagic Design/DaVinci Resolve/Fusion/Scripts
@@ -77,37 +83,39 @@ in Lua and dir, help etc in Python (among other methods). A notable scriptable o
 
 Running DaVinci Resolve in headless mode
 ----------------------------------------
-DaVinci Resolve can be launched in a headless mode without the user interface using the -nogui command line option. When DaVinci Resolve is launched using this option, the user interface is disabled.
+DaVinci Resolve can be launched in a headless mode without the user interface using the `-nogui` command line option. When DaVinci Resolve is launched using this option, the user interface is disabled.
 However, the various scripting APIs will continue to work as expected.
 
 DaVinci Resolve API
 -------------------
 Some commonly used API functions are described below (*). As with the resolve object, each object is inspectable for properties and functions.
 
-Resolve
-  Fusion()                                        --> Fusion             # Returns the Fusion object. Starting point for Fusion scripts.
-  GetMediaStorage()                               --> MediaStorage       # Returns the media storage object to query and act on media locations.
-  GetProjectManager()                             --> ProjectManager     # Returns the project manager object for currently open database.
-  OpenPage(pageName)                              --> Bool               # Switches to indicated page in DaVinci Resolve. Input can be one of ("media", "cut", "edit", "fusion", "color", "fairlight", "deliver").
-  GetCurrentPage()                                --> String             # Returns the page currently displayed in the main window. Returned value can be one of ("media", "cut", "edit", "fusion", "color", "fairlight", "deliver", None).
-  GetProductName()                                --> string             # Returns product name.
-  GetVersion()                                    --> [version fields]   # Returns list of product version fields in [major, minor, patch, build, suffix] format.
-  GetVersionString()                              --> string             # Returns product version in "major.minor.patch[suffix].build" format.
-  LoadLayoutPreset(presetName)                    --> Bool               # Loads UI layout from saved preset named 'presetName'.
-  UpdateLayoutPreset(presetName)                  --> Bool               # Overwrites preset named 'presetName' with current UI layout.
-  ExportLayoutPreset(presetName, presetFilePath)  --> Bool               # Exports preset named 'presetName' to path 'presetFilePath'.
-  DeleteLayoutPreset(presetName)                  --> Bool               # Deletes preset named 'presetName'.
-  SaveLayoutPreset(presetName)                    --> Bool               # Saves current UI layout as a preset named 'presetName'.
-  ImportLayoutPreset(presetFilePath, presetName)  --> Bool               # Imports preset from path 'presetFilePath'. The optional argument 'presetName' specifies how the preset shall be named. If not specified, the preset is named based on the filename.
-  Quit()                                          --> None               # Quits the Resolve App.
-  ImportRenderPreset(presetPath)                  --> Bool               # Import a preset from presetPath (string) and set it as current preset for rendering.
-  ExportRenderPreset(presetName, exportPath)      --> Bool               # Export a preset to a given path (string) if presetName(string) exists.
-  ImportBurnInPreset(presetPath)                  --> Bool               # Import a data burn in preset from a given presetPath (string)
-  ExportBurnInPreset(presetName, exportPath)      --> Bool               # Export a data burn in preset to a given path (string) if presetName (string) exists.
-  GetKeyframeMode()                               --> keyframeMode       # Returns the currently set keyframe mode (int). Refer to section 'Keyframe Mode information' below for details.
-  SetKeyframeMode(keyframeMode)                   --> Bool               # Returns True when 'keyframeMode'(enum) is successfully set. Refer to section 'Keyframe Mode information' below for details.
+### Resolve
+| Method | Return Type | Comment |
+| ------ | ----------- | ------- |
+| Fusion()                                        | Fusion             | Returns the Fusion object. Starting point for Fusion scripts. |
+| GetMediaStorage()                               | MediaStorage       | Returns the media storage object to query and act on media locations. |
+| GetProjectManager()                             | ProjectManager     | Returns the project manager object for currently open database. |
+| OpenPage(pageName)                              | Bool               | Switches to indicated page in DaVinci Resolve. Input can be one of ("media", "cut", "edit", "fusion", "color", "fairlight", "deliver"). |
+| GetCurrentPage()                                | String             | Returns the page currently displayed in the main window. Returned value can be one of ("media", "cut", "edit", "fusion", "color", "fairlight", "deliver", None). |
+| GetProductName()                                | string             | Returns product name. |
+| GetVersion()                                    | [version field|]   # Returns list of product version fields in [major, minor, patch, build, suffix] format. |
+| GetVersionString()                              | string             | Returns product version in "major.minor.patch[suffix].build" format. |
+| LoadLayoutPreset(presetName)                    | Bool               | Loads UI layout from saved preset named 'presetName'. |
+| UpdateLayoutPreset(presetName)                  | Bool               | Overwrites preset named 'presetName' with current UI layout. |
+| ExportLayoutPreset(presetName, presetFilePath)  | Bool               | Exports preset named 'presetName' to path 'presetFilePath'. |
+| DeleteLayoutPreset(presetName)                  | Bool               | Deletes preset named 'presetName'. |
+| SaveLayoutPreset(presetName)                    | Bool               | Saves current UI layout as a preset named 'presetName'. |
+| ImportLayoutPreset(presetFilePath, presetName)  | Bool               | Imports preset from path 'presetFilePath'. The optional argument 'presetName' specifies how the preset shall be named. If not specified, the preset is named based on the filename. |
+| Quit()                                          | None               | Quits the Resolve App. |
+| ImportRenderPreset(presetPath)                  | Bool               | Import a preset from presetPath (string) and set it as current preset for rendering. |
+| ExportRenderPreset(presetName, exportPath)      | Bool               | Export a preset to a given path (string) if presetName(string) exists. |
+| ImportBurnInPreset(presetPath)                  | Bool               | Import a data burn in preset from a given presetPath (string). |
+| ExportBurnInPreset(presetName, exportPath)      | Bool               | Export a data burn in preset to a given path (string) if presetName (string) exists. |
+| GetKeyframeMode()                               | keyframeMode       | Returns the currently set keyframe mode (int). Refer to section 'Keyframe Mode information' below for details. |
+| SetKeyframeMode(keyframeMode)                   | Bool               | Returns True when 'keyframeMode'(enum) is successfully set. Refer to section 'Keyframe Mode information' below for details. |
 
-ProjectManager
+### ProjectManager
   ArchiveProject(projectName,
                  filePath,
                  isArchiveSrcMedia=True,
@@ -145,7 +153,7 @@ ProjectManager
                                                                          # 'folderPath': String; path of folder to restore
                                                                          # '{cloudSettings}': Check 'Cloud Projects Settings' subsection below for more information.
 
-Project
+### Project
   GetMediaPool()                                  --> MediaPool          # Returns the Media Pool object.
   GetTimelineCount()                              --> int                # Returns the number of timelines currently present in the project.
   GetTimelineByIndex(idx)                         --> Timeline           # Returns timeline at the given index, 1 <= idx <= project.GetTimelineCount()
@@ -192,7 +200,7 @@ Project
   AddColorGroup(groupName)                        --> ColorGroup         # Creates a new ColorGroup. groupName must be a unique string.
   DeleteColorGroup(colorGroup)                    --> Bool               # Deletes the given color group and sets clips to ungrouped.
 
-MediaStorage
+### MediaStorage
   GetMountedVolumeList()                          --> [paths...]         # Returns list of folder paths corresponding to mounted volumes displayed in Resolve’s Media Storage.
   GetSubFolderList(folderPath)                    --> [paths...]         # Returns list of folder paths in the given absolute folder path.
   GetFileList(folderPath)                         --> [paths...]         # Returns list of media and file listings in the given absolute folder path. Note that media listings may be logically consolidated entries.
@@ -203,7 +211,7 @@ MediaStorage
   AddClipMattesToMediaPool(MediaPoolItem, [paths], stereoEye) --> Bool   # Adds specified media files as mattes for the specified MediaPoolItem. StereoEye is an optional argument for specifying which eye to add the matte to for stereo clips ("left" or "right"). Returns True if successful.
   AddTimelineMattesToMediaPool([paths])           --> [MediaPoolItems]   # Adds specified media files as timeline mattes in current media pool folder. Returns a list of created MediaPoolItems.
 
-MediaPool
+### MediaPool
   GetRootFolder()                                 --> Folder             # Returns root Folder of Media Pool
   AddSubFolder(folder, name)                      --> Folder             # Adds new subfolder under specified Folder object with the given name.
   RefreshFolders()                                --> Bool               # Updates the folders in collaboration mode
@@ -246,7 +254,7 @@ MediaPool
   GetSelectedClips()                              --> [MediaPoolItems]   # Returns the current selected MediaPoolItems
   SetSelectedClip(MediaPoolItem)                  --> Bool               # Sets the selected MediaPoolItem to the given MediaPoolItem
 
-Folder
+### Folder
   GetClipList()                                   --> [clips...]         # Returns a list of clips (items) within the folder.
   GetName()                                       --> string             # Returns the media folder name.
   GetSubFolderList()                              --> [folders...]       # Returns a list of subfolders in the folder.
@@ -256,7 +264,7 @@ Folder
   TranscribeAudio()                               --> Bool               # Transcribes audio of the MediaPoolItems within the folder and nested folders. Returns True if successful; False otherwise
   ClearTranscription()                            --> Bool               # Clears audio transcription of the MediaPoolItems within the folder and nested folders. Returns True if successful; False otherwise.
 
-MediaPoolItem
+### MediaPoolItem
   GetName()                                       --> string             # Returns the clip name.
   GetMetadata(metadataType=None)                  --> string|dict        # Returns the metadata value for the key 'metadataType'.
                                                                          # If no argument is specified, a dict of all set metadata properties is returned.
@@ -296,7 +304,7 @@ MediaPoolItem
 
   GetAudioMapping()                               --> json formatted string # Returns a string with MediaPoolItem's audio mapping information. Check 'Audio Mapping' section below for more information.
 
-Timeline
+### Timeline
   GetName()                                       --> string             # Returns the timeline name.
   SetName(timelineName)                           --> Bool               # Sets the timeline name if timelineName (string) is unique. Returns True if successful.
   GetStartFrame()                                 --> int                # Returns the frame number at the start of timeline.
@@ -386,7 +394,7 @@ Timeline
                      analysisType=NONE)                                  # if [timelineItems] is empty, analysis performed on all items. Else, analysis performed on [timelineItems] only.
                                                                          # set analysisType to resolve.DLB_BLEND_SHOTS for blend setting
 
-TimelineItem
+### TimelineItem
   GetName()                                       --> string             # Returns the item name.
   GetDuration(subframe_precision)                 --> int/float          # Returns the item duration. Returns fractional frames if subframe_precision is True
   GetEnd(subframe_precision)                      --> int/float          # Returns the end frame position on the timeline. Returns fractional frames if subframe_precision is True
@@ -470,14 +478,14 @@ TimelineItem
                                                                            # 1 <= trackIndex <= Timeline.GetTrackCount(trackType)
   GetSourceAudioChannelMapping()                 --> json formatted string # Returns a string with TimelineItem's audio mapping information. Check 'Audio Mapping' section below for more information.
 
-Gallery
+### Gallery
   GetAlbumName(galleryStillAlbum)                 --> string             # Returns the name of the GalleryStillAlbum object 'galleryStillAlbum'.
   SetAlbumName(galleryStillAlbum, albumName)      --> Bool               # Sets the name of the GalleryStillAlbum object 'galleryStillAlbum' to 'albumName'.
   GetCurrentStillAlbum()                          --> galleryStillAlbum  # Returns current album as a GalleryStillAlbum object.
   SetCurrentStillAlbum(galleryStillAlbum)         --> Bool               # Sets current album to GalleryStillAlbum object 'galleryStillAlbum'.
   GetGalleryStillAlbums()                         --> [galleryStillAlbum] # Returns the gallery albums as a list of GalleryStillAlbum objects.
 
-GalleryStillAlbum
+### GalleryStillAlbum
   GetStills()                                     --> [galleryStill]     # Returns the list of GalleryStill objects in the album.
   GetLabel(galleryStill)                          --> string             # Returns the label of the galleryStill.
   SetLabel(galleryStill, label)                   --> Bool               # Sets the new 'label' to GalleryStill object 'galleryStill'.
@@ -485,9 +493,10 @@ GalleryStillAlbum
   ExportStills([galleryStill], folderPath, filePrefix, format) --> Bool  # Exports list of GalleryStill objects '[galleryStill]' to directory 'folderPath', with filename prefix 'filePrefix', using file format 'format' (supported formats: dpx, cin, tif, jpg, png, ppm, bmp, xpm, drx).
   DeleteStills([galleryStill])                    --> Bool               # Deletes specified list of GalleryStill objects '[galleryStill]'.
 
-GalleryStill                                                             # This class does not provide any API functions but the object type is used by functions in other classes.
+### GalleryStill                                                         
+This class does not provide any API functions but the object type is used by functions in other classes.
 
-Graph
+### Graph
   GetNumNodes()                                   --> int                # Returns the number of nodes in the graph
   SetLUT(nodeIndex, lutPath)                      --> Bool               # Sets LUT on the node mapping the node index provided, 1 <= nodeIndex <= self.GetNumNodes().
                                                                          # The lutPath can be an absolute path, or a relative path (based off custom LUT paths or the master LUT path).
@@ -498,7 +507,7 @@ Graph
   SetNodeEnabled(nodeIndex, isEnabled)            --> Bool               # Sets the node at the given nodeIndex (int) to isEnabled (bool).
                                                                          # 1 <= nodeIndex <= self.GetNumNodes().
 
-ColorGroup
+### ColorGroup
   GetName()                                       --> String             # Returns the name (string) of the ColorGroup.
   SetName(groupName)                              --> Bool               # Renames ColorGroup to groupName (string).
   GetClipsInTimeline(Timeline=CurrTimeline)       --> [TimelineItem]     # Returns a list of TimelineItem that are in colorGroup in the given Timeline. Timeline is Current Timeline by default.
@@ -508,14 +517,14 @@ ColorGroup
 List and Dict Data Structures
 -----------------------------
 Beside primitive data types, Resolve's Python API mainly uses list and dict data structures. Lists are denoted by [ ... ] and dicts are denoted by { ... } above.
-As Lua does not support list and dict data structures, the Lua API implements "list" as a table with indices, e.g. { [1] = listValue1, [2] = listValue2, ... }.
-Similarly the Lua API implements "dict" as a table with the dictionary key as first element, e.g. { [dictKey1] = dictValue1, [dictKey2] = dictValue2, ... }.
+As Lua does not support list and dict data structures, the Lua API implements "list" as a table with indices, e.g. `{ [1] = listValue1, [2] = listValue2, ... }`.
+Similarly the Lua API implements "dict" as a table with the dictionary key as first element, e.g. `{ [dictKey1] = dictValue1, [dictKey2] = dictValue2, ... }`.
 
 Keyframe Mode information
 -------------------------
-This section covers additional notes for the functions Resolve.GetKeyframeMode() and Resolve.SetKeyframeMode(keyframeMode).
+This section covers additional notes for the functions `Resolve.GetKeyframeMode()` and `Resolve.SetKeyframeMode(keyframeMode)`.
 
-'keyframeMode' can be one of the following enums:
+`keyframeMode` can be one of the following enums:
     - resolve.KEYFRAME_MODE_ALL     == 0
     - resolve.KEYFRAME_MODE_COLOR   == 1
     - resolve.KEYFRAME_MODE_SIZING  == 2
