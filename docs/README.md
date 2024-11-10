@@ -2,7 +2,7 @@
 
 This document is a formatted copy of the official BlackmagicDesign DaVinci Resolve scripting documentation.
 
-WARNING: Keep in mind that this document might contain errors and might not be up to date with the current Resolve version. If in doubt, always consult the official Resolve documentation provided by BlackmagicDesign.
+**WARNING: Keep in mind that this document might contain errors and might not be up to date with the current Resolve version. If in doubt, always consult the official Resolve documentation provided by BlackmagicDesign.**
 
 *Last Updated: 3 October 2024*
 
@@ -513,9 +513,9 @@ Keyframe Mode information
 This section covers additional notes for the functions `Resolve.GetKeyframeMode()` and `Resolve.SetKeyframeMode(keyframeMode)`.
 
 `keyframeMode` can be one of the following enums:
-- resolve.KEYFRAME_MODE_ALL     == 0
-- resolve.KEYFRAME_MODE_COLOR   == 1
-- resolve.KEYFRAME_MODE_SIZING  == 2
+* `resolve.KEYFRAME_MODE_ALL     == 0`
+* `resolve.KEYFRAME_MODE_COLOR   == 1`
+* `resolve.KEYFRAME_MODE_SIZING  == 2`
 
 Integer values returned by `Resolve.GetKeyframeMode()` will correspond to the enums above.
 
@@ -524,88 +524,90 @@ Cloud Projects Settings
 This section covers additional notes for the functions "ProjectManager:CreateCloudProject," "ProjectManager:ImportCloudProject," and "ProjectManager:RestoreCloudProject"
 
 All three functions take in a {cloudSettings} dict, that have the following keys:
-* resolve.CLOUD_SETTING_PROJECT_NAME: String, ["" by default]
-* resolve.CLOUD_SETTING_PROJECT_MEDIA_PATH: String, ["" by default]
-* resolve.CLOUD_SETTING_IS_COLLAB: Bool, [False by default]
-* resolve.CLOUD_SETTING_SYNC_MODE: syncMode (see below), [resolve.CLOUD_SYNC_PROXY_ONLY by default]
-* resolve.CLOUD_SETTING_IS_CAMERA_ACCESS: Bool [False by default]
+* `resolve.CLOUD_SETTING_PROJECT_NAME`: `String`, [`""` by default]
+* `resolve.CLOUD_SETTING_PROJECT_MEDIA_PATH`: `String`, [`""` by default]
+* `resolve.CLOUD_SETTING_IS_COLLAB`: `Bool`, [`False` by default]
+* `resolve.CLOUD_SETTING_SYNC_MODE`: `syncMode` (see below), [`resolve.CLOUD_SYNC_PROXY_ONLY` by default]
+* `resolve.CLOUD_SETTING_IS_CAMERA_ACCESS`: `Bool` [`False` by default]
 
-Where syncMode is one of the following values:
-* resolve.CLOUD_SYNC_NONE,
-* resolve.CLOUD_SYNC_PROXY_ONLY,
-* resolve.CLOUD_SYNC_PROXY_AND_ORIG
+Where `syncMode` is one of the following values:
+* `resolve.CLOUD_SYNC_NONE`,
+* `resolve.CLOUD_SYNC_PROXY_ONLY`,
+* `resolve.CLOUD_SYNC_PROXY_AND_ORIG`
 
-All three "ProjectManager:CreateCloudProject," "ProjectManager:ImportCloudProject," and "ProjectManager:RestoreCloudProject" require resolve.PROJECT_MEDIA_PATH to be defined. "ProjectManager:CreateCloudProject" also requires resolve.PROJECT_NAME to be defined.
+All three `ProjectManager:CreateCloudProject`, `ProjectManager:ImportCloudProject`, and `ProjectManager:RestoreCloudProject` require `resolve.PROJECT_MEDIA_PATH` to be defined. `ProjectManager:CreateCloudProject` also requires `resolve.PROJECT_NAME` to be defined.
 
 Looking up Project and Clip properties
 --------------------------------------
-This section covers additional notes for the functions "Project:GetSetting", "Project:SetSetting", "Timeline:GetSetting", "Timeline:SetSetting", "MediaPoolItem:GetClipProperty" and
-"MediaPoolItem:SetClipProperty". These functions are used to get and set properties otherwise available to the user through the Project Settings and the Clip Attributes dialogs.
+This section covers additional notes for the functions `Project:GetSetting`, `Project:SetSetting`, `Timeline:GetSetting`, `Timeline:SetSetting`, `MediaPoolItem:GetClipProperty` and
+`MediaPoolItem:SetClipProperty`. These functions are used to get and set properties otherwise available to the user through the Project Settings and the Clip Attributes dialogs.
 
-The functions follow a key-value pair format, where each property is identified by a key (the settingName or propertyName parameter) and possesses a value (typically a text value). Keys and values are
+The functions follow a key-value pair format, where each property is identified by a key (the `settingName` or `propertyName` parameter) and possesses a value (typically a text value). Keys and values are
 designed to be easily correlated with parameter names and values in the Resolve UI. Explicitly enumerated values for some parameters are listed below.
 
-Some properties may be read only - these include intrinsic clip properties like date created or sample rate, and properties that can be disabled in specific application contexts (e.g. custom colorspaces
-in an ACES workflow, or output sizing parameters when behavior is set to match timeline)
+Some properties may be read only - these include intrinsic clip properties like date created or sample rate, and properties that can be disabled in specific application contexts (e.g., custom colorspaces
+in an ACES workflow, or output sizing parameters when behavior is set to match timeline).
 
-Getting values:
-Invoke "Project:GetSetting", "Timeline:GetSetting" or "MediaPoolItem:GetClipProperty" with the appropriate property key. To get a snapshot of all queryable properties (keys and values), you can call
-"Project:GetSetting", "Timeline:GetSetting" or "MediaPoolItem:GetClipProperty" without parameters (or with a NoneType or a blank property key). Using specific keys to query individual properties will
+### Getting values:
+Invoke `Project:GetSetting`, `Timeline:GetSetting` or `MediaPoolItem:GetClipProperty` with the appropriate property key. To get a snapshot of all queryable properties (keys and values), you can call
+`Project:GetSetting`, `Timeline:GetSetting` or `MediaPoolItem:GetClipProperty` without parameters (or with a `NoneType` or a blank property key). Using specific keys to query individual properties will
 be faster. Note that getting a property using an invalid key will return a trivial result.
 
-Setting values:
-Invoke "Project:SetSetting", "Timeline:SetSetting" or "MediaPoolItem:SetClipProperty" with the appropriate property key and a valid value. When setting a parameter, please check the return value to
+### Setting values:
+Invoke `Project:SetSetting`, `Timeline:SetSetting` or `MediaPoolItem:SetClipProperty` with the appropriate property key and a valid value. When setting a parameter, please check the return value to
 ensure the success of the operation. You can troubleshoot the validity of keys and values by setting the desired result from the UI and checking property snapshots before and after the change.
 
-The following Project properties have specifically enumerated values:
-"superScale" - the property value is an enumerated integer between 0 and 4 with these meanings: 0=Auto, 1=no scaling, and 2, 3 and 4 represent the Super Scale multipliers 2x, 3x and 4x.
-               for super scale multiplier '2x Enhanced', exactly 4 arguments must be passed as outlined below. If less than 4 arguments are passed, it will default to 2x.
-Affects:
-• x = Project:GetSetting('superScale') and Project:SetSetting('superScale', x)
-• for '2x Enhanced' --> Project:SetSetting('superScale', 2, sharpnessValue, noiseReductionValue), where sharpnessValue is a float in the range [0.0, 1.0] and noiseReductionValue is a float in the range [0.0, 1.0]
+### The following Project properties have specifically enumerated values:
+- `superScale` - the property value is an enumerated integer between `0` and `4` with these meanings: `0=Auto`, `1=no scaling`, and `2`, `3`, and `4` represent the Super Scale multipliers `2x`, `3x`, and `4x`.
+    - for super scale multiplier `'2x Enhanced'`, exactly `4` arguments must be passed as outlined below. If less than `4` arguments are passed, it will default to `2x`.
+  
+**Affects:**
+- `x = Project:GetSetting('superScale')` and `Project:SetSetting('superScale', x)`
+- for `'2x Enhanced'` --> `Project:SetSetting('superScale', 2, sharpnessValue, noiseReductionValue)`, where `sharpnessValue` is a float in the range `[0.0, 1.0]` and `noiseReductionValue` is a float in the range `[0.0, 1.0]`
 
-"timelineFrameRate" - the property value is one of the frame rates available to the user in project settings under "Timeline frame rate" option. Drop Frame can be configured for supported frame rates
-                      by appending the frame rate with "DF", e.g. "29.97 DF" will enable drop frame and "29.97" will disable drop frame
-Affects:
-• x = Project:GetSetting('timelineFrameRate') and Project:SetSetting('timelineFrameRate', x)
+- `"timelineFrameRate"` - the property value is one of the frame rates available to the user in project settings under "Timeline frame rate" option. Drop Frame can be configured for supported frame rates
+  by appending the frame rate with `"DF"`, e.g., `"29.97 DF"` will enable drop frame and `"29.97"` will disable drop frame
 
-The following Clip properties have specifically enumerated values:
-"Super Scale" - the property value is an enumerated integer between 1 and 4 with these meanings: 1=no scaling, and 2, 3 and 4 represent the Super Scale multipliers 2x, 3x and 4x.
-                for super scale multiplier '2x Enhanced', exactly 4 arguments must be passed as outlined below. If less than 4 arguments are passed, it will default to 2x.
-Affects:
-• x = MediaPoolItem:GetClipProperty('Super Scale') and MediaPoolItem:SetClipProperty('Super Scale', x)
-• for '2x Enhanced' --> MediaPoolItem:SetClipProperty('Super Scale', 2, sharpnessValue, noiseReductionValue), where sharpnessValue is a float in the range [0.0, 1.0] and noiseReductionValue is a float in the range [0.0, 1.0]
+**Affects:**
+- `x = Project:GetSetting('timelineFrameRate')` and `Project:SetSetting('timelineFrameRate', x)`
 
-"Cloud Sync" = the property value is an enumerated integer that will correspond to one of the following enums:
-* resolve.CLOUD_SYNC_DEFAULT                == -1
-* resolve.CLOUD_SYNC_DOWNLOAD_IN_QUEUE      == 0
-* resolve.CLOUD_SYNC_DOWNLOAD_IN_PROGRESS   == 1
-* resolve.CLOUD_SYNC_DOWNLOAD_SUCCESS       == 2
-* resolve.CLOUD_SYNC_DOWNLOAD_FAIL          == 3
-* resolve.CLOUD_SYNC_DOWNLOAD_NOT_FOUND     == 4
+### The following Clip properties have specifically enumerated values:
+- `"Super Scale"` - the property value is an enumerated integer between `1` and `4` with these meanings: `1=no scaling`, and `2`, `3`, and `4` represent the Super Scale multipliers `2x`, `3x`, and `4x`.
+    - for super scale multiplier `'2x Enhanced'`, exactly `4` arguments must be passed as outlined below. If less than `4` arguments are passed, it will default to `2x`.
+  
+**Affects:**
+- `x = MediaPoolItem:GetClipProperty('Super Scale')` and `MediaPoolItem:SetClipProperty('Super Scale', x)`
+- for `'2x Enhanced'` --> `MediaPoolItem:SetClipProperty('Super Scale', 2, sharpnessValue, noiseReductionValue)`, where `sharpnessValue` is a float in the range `[0.0, 1.0]` and `noiseReductionValue` is a float in the range `[0.0, 1.0]`
 
-* resolve.CLOUD_SYNC_UPLOAD_IN_QUEUE        == 5
-* resolve.CLOUD_SYNC_UPLOAD_IN_PROGRESS     == 6
-* resolve.CLOUD_SYNC_UPLOAD_SUCCESS         == 7
-* resolve.CLOUD_SYNC_UPLOAD_FAIL            == 8
-* resolve.CLOUD_SYNC_UPLOAD_NOT_FOUND       == 9
-
-* resolve.CLOUD_SYNC_SUCCESS                == 10
+- `Cloud Sync` - the property value is an enumerated integer that will correspond to one of the following enums:
+    - `resolve.CLOUD_SYNC_DEFAULT                == -1`
+    - `resolve.CLOUD_SYNC_DOWNLOAD_IN_QUEUE      == 0`
+    - `resolve.CLOUD_SYNC_DOWNLOAD_IN_PROGRESS   == 1`
+    - `resolve.CLOUD_SYNC_DOWNLOAD_SUCCESS       == 2`
+    - `resolve.CLOUD_SYNC_DOWNLOAD_FAIL          == 3`
+    - `resolve.CLOUD_SYNC_DOWNLOAD_NOT_FOUND     == 4`
+    - `resolve.CLOUD_SYNC_UPLOAD_IN_QUEUE        == 5`
+    - `resolve.CLOUD_SYNC_UPLOAD_IN_PROGRESS     == 6`
+    - `resolve.CLOUD_SYNC_UPLOAD_SUCCESS         == 7`
+    - `resolve.CLOUD_SYNC_UPLOAD_FAIL            == 8`
+    - `resolve.CLOUD_SYNC_UPLOAD_NOT_FOUND       == 9`
+    - `resolve.CLOUD_SYNC_SUCCESS                == 10`
 
 Audio Mapping
 ---------------
-This section covers the output for mpItem.GetAudioMapping() and timelineItem.GetSourceAudioChannelMapping()
-Mapping format (json result) is similar for mpItem and timelineItem.
+This section covers the output for `mpItem.GetAudioMapping()` and `timelineItem.GetSourceAudioChannelMapping()`
+Mapping format (json result) is similar for `mpItem` and `timelineItem`.
 
-This section will follow an example of an mpItem that has audio from its embedded source, and from two other clips that are linked to it.
-The audio clip attributes of this mpItem will show 3 tracks.
+This section will follow an example of an `mpItem` that has audio from its embedded source, and from two other clips that are linked to it.
+The audio clip attributes of this `mpItem` will show 3 tracks.
 
-Assume that (A) the embedded track is of format/type 'stereo' (2 channels),
-            (B) linked clip 1 track is of format/type '7.1' (8 channels),
-            (C) linked clip 2 track is '5.1' (6 channels)
+Assume that<br>
+(A) the embedded track is of format/type 'stereo' (2 channels),<br>
+(B) linked clip 1 track is of format/type '7.1' (8 channels),<br>
+(C) linked clip 2 track is '5.1' (6 channels)<br>
 and assume that the format/type was not changed further.
 
-mpItem.GetAudioMapping() returns a string of the form:
+`mpItem.GetAudioMapping()` returns a string of the form:
 ```
     {
       "embedded_audio_channels": 2,                 # Total number of embedded channels across all tracks
@@ -642,223 +644,231 @@ mpItem.GetAudioMapping() returns a string of the form:
 
 Auto Caption Settings
 ----------------------
-This section covers the supported settings for the method Timeline.CreateSubtitlesFromAudio({autoCaptionSettings})
+This section covers the supported settings for the method `Timeline.CreateSubtitlesFromAudio({autoCaptionSettings})`
 
 The parameter setting is a dictionary containing the following keys:
-* resolve.SUBTITLE_LANGUAGE: languageID (see below), [resolve.AUTO_CAPTION_AUTO by default]
-* resolve.SUBTITLE_CAPTION_PRESET: presetType (see below), [resolve.AUTO_CAPTION_SUBTITLE_DEFAULT by default]
-* resolve.SUBTITLE_CHARS_PER_LINE: Number between 1 and 60 inclusive [42 by default]
-* resolve.SUBTITLE_LINE_BREAK: lineBreakType (see below), [resolve.AUTO_CAPTION_LINE_SINGLE by default]
-* resolve.SUBTITLE_GAP: Number between 0 and 10 inclusive [0 by default]
+* `resolve.SUBTITLE_LANGUAGE`: `languageID` (see below), [`resolve.AUTO_CAPTION_AUTO` by default]
+* `resolve.SUBTITLE_CAPTION_PRESET`: `presetType` (see below), [`resolve.AUTO_CAPTION_SUBTITLE_DEFAULT` by default]
+* `resolve.SUBTITLE_CHARS_PER_LINE`: `Number` between 1 and 60 inclusive [`42` by default]
+* `resolve.SUBTITLE_LINE_BREAK`: `lineBreakType` (see below), [`resolve.AUTO_CAPTION_LINE_SINGLE` by default]
+* `resolve.SUBTITLE_GAP`: `Number` between 0 and 10 inclusive [`0` by default]
 
 Note that the default values for some keys may change based on values defined for other keys, as per the UI.
 For example, if the following dictionary is supplied,
-    CreateSubtitlesFromAudio( { resolve.SUBTITLE_LANGUAGE = resolve.AUTO_CAPTION_KOREAN,
-                                resolve.SUBTITLE_CAPTION_PRESET = resolve.AUTO_CAPTION_NETFLIX } )
-the default value for resolve.SUBTITLE_CHARS_PER_LINE will be 16 instead of 42
+    `CreateSubtitlesFromAudio( { resolve.SUBTITLE_LANGUAGE = resolve.AUTO_CAPTION_KOREAN,
+                                resolve.SUBTITLE_CAPTION_PRESET = resolve.AUTO_CAPTION_NETFLIX } )`
+the default value for `resolve.SUBTITLE_CHARS_PER_LINE` will be 16 instead of 42
 
-languageIDs:
-* resolve.AUTO_CAPTION_AUTO
-* resolve.AUTO_CAPTION_DANISH
-* resolve.AUTO_CAPTION_DUTCH
-* resolve.AUTO_CAPTION_ENGLISH
-* resolve.AUTO_CAPTION_FRENCH
-* resolve.AUTO_CAPTION_GERMAN
-* resolve.AUTO_CAPTION_ITALIAN
-* resolve.AUTO_CAPTION_JAPANESE
-* resolve.AUTO_CAPTION_KOREAN
-* resolve.AUTO_CAPTION_MANDARIN_SIMPLIFIED
-* resolve.AUTO_CAPTION_MANDARIN_TRADITIONAL
-* resolve.AUTO_CAPTION_NORWEGIAN
-* resolve.AUTO_CAPTION_PORTUGUESE
-* resolve.AUTO_CAPTION_RUSSIAN
-* resolve.AUTO_CAPTION_SPANISH
-* resolve.AUTO_CAPTION_SWEDISH
+`languageID`s:
+* `resolve.AUTO_CAPTION_AUTO`
+* `resolve.AUTO_CAPTION_DANISH`
+* `resolve.AUTO_CAPTION_DUTCH`
+* `resolve.AUTO_CAPTION_ENGLISH`
+* `resolve.AUTO_CAPTION_FRENCH`
+* `resolve.AUTO_CAPTION_GERMAN`
+* `resolve.AUTO_CAPTION_ITALIAN`
+* `resolve.AUTO_CAPTION_JAPANESE`
+* `resolve.AUTO_CAPTION_KOREAN`
+* `resolve.AUTO_CAPTION_MANDARIN_SIMPLIFIED`
+* `resolve.AUTO_CAPTION_MANDARIN_TRADITIONAL`
+* `resolve.AUTO_CAPTION_NORWEGIAN`
+* `resolve.AUTO_CAPTION_PORTUGUESE`
+* `resolve.AUTO_CAPTION_RUSSIAN`
+* `resolve.AUTO_CAPTION_SPANISH`
+* `resolve.AUTO_CAPTION_SWEDISH`
 
-presetTypes:
-* resolve.AUTO_CAPTION_SUBTITLE_DEFAULT
-* resolve.AUTO_CAPTION_TELETEXT
-* resolve.AUTO_CAPTION_NETFLIX
+`presetType`s:
+* `resolve.AUTO_CAPTION_SUBTITLE_DEFAULT`
+* `resolve.AUTO_CAPTION_TELETEXT`
+* `resolve.AUTO_CAPTION_NETFLIX`
 
-lineBreakTypes:
-* resolve.AUTO_CAPTION_LINE_SINGLE
-* resolve.AUTO_CAPTION_LINE_DOUBLE
+`lineBreakType`s:
+* `resolve.AUTO_CAPTION_LINE_SINGLE`
+* `resolve.AUTO_CAPTION_LINE_DOUBLE`
+
 
 Looking up Render Settings
 --------------------------
-This section covers the supported settings for the method SetRenderSettings({settings})
+This section covers the supported settings for the method `SetRenderSettings({settings})`
 
-The parameter setting is a dictionary containing the following keys:
-    - "SelectAllFrames": Bool (when set True, the settings MarkIn and MarkOut are ignored)
-    - "MarkIn": int
-    - "MarkOut": int
-    - "TargetDir": string
-    - "CustomName": string
-    - "UniqueFilenameStyle": 0 - Prefix, 1 - Suffix.
-    - "ExportVideo": Bool
-    - "ExportAudio": Bool
-    - "FormatWidth": int
-    - "FormatHeight": int
-    - "FrameRate": float (examples: 23.976, 24)
-    - "PixelAspectRatio": string (for SD resolution: "16_9" or "4_3") (other resolutions: "square" or "cinemascope")
-    - "VideoQuality" possible values for current codec (if applicable):
-    -    0 (int) - will set quality to automatic
-    -    [1 -> MAX] (int) - will set input bit rate
-    -    ["Least", "Low", "Medium", "High", "Best"] (String) - will set input quality level
-    - "AudioCodec": string (example: "aac")
-    - "AudioBitDepth": int
-    - "AudioSampleRate": int
-    - "ColorSpaceTag" : string (example: "Same as Project", "AstroDesign")
-    - "GammaTag" : string (example: "Same as Project", "ACEScct")
-    - "ExportAlpha": Bool
-    - "EncodingProfile": string (example: "Main10"). Can only be set for H.264 and H.265.
-    - "MultiPassEncode": Bool. Can only be set for H.264.
-    - "AlphaMode": 0 - Premultiplied, 1 - Straight. Can only be set if "ExportAlpha" is true.
-    - "NetworkOptimization": Bool. Only supported by QuickTime and MP4 formats.
+The parameter `settings` is a dictionary containing the following keys:
+- `SelectAllFrames`: Bool (when set `True`, the settings `MarkIn` and `MarkOut` are ignored)
+- `MarkIn`: int
+- `MarkOut`: int
+- `TargetDir`: string
+- `CustomName`: string
+- `UniqueFilenameStyle`: `0` - Prefix, `1` - Suffix.
+- `ExportVideo`: Bool
+- `ExportAudio`: Bool
+- `FormatWidth`: int
+- `FormatHeight`: int
+- `FrameRate`: float (examples: `23.976`, `24`)
+- `PixelAspectRatio`: string (for SD resolution: `"16_9"` or `"4_3"`) (other resolutions: `"square"` or `"cinemascope"`)
+- `VideoQuality` possible values for current codec (if applicable):
+    - `0` (int) - will set quality to automatic
+    - `[1 -> MAX]` (int) - will set input bit rate
+    - `["Least", "Low", "Medium", "High", "Best"]` (String) - will set input quality level
+- `AudioCodec`: string (example: `"aac"`)
+- `AudioBitDepth`: int
+- `AudioSampleRate`: int
+- `ColorSpaceTag`: string (example: `"Same as Project"`, `"AstroDesign"`)
+- `GammaTag`: string (example: `"Same as Project"`, `"ACEScct"`)
+- `ExportAlpha`: Bool
+- `EncodingProfile`: string (example: `"Main10"`). Can only be set for `H.264` and `H.265`.
+- `MultiPassEncode`: Bool. Can only be set for `H.264`.
+- `AlphaMode`: `0` - Premultiplied, `1` - Straight. Can only be set if `ExportAlpha` is true.
+- `NetworkOptimization`: Bool. Only supported by `QuickTime` and `MP4` formats.
+
 
 Looking up timeline export properties
 -------------------------------------
-This section covers the parameters for the argument Export(fileName, exportType, exportSubtype).
+This section covers the parameters for the argument `Export(fileName, exportType, exportSubtype)`.
 
-exportType can be one of the following constants:
-    - resolve.EXPORT_AAF
-    - resolve.EXPORT_DRT
-    - resolve.EXPORT_EDL
-    - resolve.EXPORT_FCP_7_XML
-    - resolve.EXPORT_FCPXML_1_8
-    - resolve.EXPORT_FCPXML_1_9
-    - resolve.EXPORT_FCPXML_1_10
-    - resolve.EXPORT_HDR_10_PROFILE_A
-    - resolve.EXPORT_HDR_10_PROFILE_B
-    - resolve.EXPORT_TEXT_CSV
-    - resolve.EXPORT_TEXT_TAB
-    - resolve.EXPORT_DOLBY_VISION_VER_2_9
-    - resolve.EXPORT_DOLBY_VISION_VER_4_0
-    - resolve.EXPORT_DOLBY_VISION_VER_5_1
-    - resolve.EXPORT_OTIO
-    - resolve.EXPORT_ALE
-    - resolve.EXPORT_ALE_CDL
-exportSubtype can be one of the following enums:
-    - resolve.EXPORT_NONE
-    - resolve.EXPORT_AAF_NEW
-    - resolve.EXPORT_AAF_EXISTING
-    - resolve.EXPORT_CDL
-    - resolve.EXPORT_SDL
-    - resolve.EXPORT_MISSING_CLIPS
-Please note that exportSubType is a required parameter for resolve.EXPORT_AAF and resolve.EXPORT_EDL. For rest of the exportType, exportSubtype is ignored.
-When exportType is resolve.EXPORT_AAF, valid exportSubtype values are resolve.EXPORT_AAF_NEW and resolve.EXPORT_AAF_EXISTING.
-When exportType is resolve.EXPORT_EDL, valid exportSubtype values are resolve.EXPORT_CDL, resolve.EXPORT_SDL, resolve.EXPORT_MISSING_CLIPS and resolve.EXPORT_NONE.
-Note: Replace 'resolve.' when using the constants above, if a different Resolve class instance name is used.
+`exportType` can be one of the following constants:
+- `resolve.EXPORT_AAF`
+- `resolve.EXPORT_DRT`
+- `resolve.EXPORT_EDL`
+- `resolve.EXPORT_FCP_7_XML`
+- `resolve.EXPORT_FCPXML_1_8`
+- `resolve.EXPORT_FCPXML_1_9`
+- `resolve.EXPORT_FCPXML_1_10`
+- `resolve.EXPORT_HDR_10_PROFILE_A`
+- `resolve.EXPORT_HDR_10_PROFILE_B`
+- `resolve.EXPORT_TEXT_CSV`
+- `resolve.EXPORT_TEXT_TAB`
+- `resolve.EXPORT_DOLBY_VISION_VER_2_9`
+- `resolve.EXPORT_DOLBY_VISION_VER_4_0`
+- `resolve.EXPORT_DOLBY_VISION_VER_5_1`
+- `resolve.EXPORT_OTIO`
+- `resolve.EXPORT_ALE`
+- `resolve.EXPORT_ALE_CDL`
+
+`exportSubtype` can be one of the following enums:
+- `resolve.EXPORT_NONE`
+- `resolve.EXPORT_AAF_NEW`
+- `resolve.EXPORT_AAF_EXISTING`
+- `resolve.EXPORT_CDL`
+- `resolve.EXPORT_SDL`
+- `resolve.EXPORT_MISSING_CLIPS`
+
+Please note that `exportSubtype` is a required parameter for `resolve.EXPORT_AAF` and `resolve.EXPORT_EDL`. For the rest of the `exportType`, `exportSubtype` is ignored.
+
+When `exportType` is `resolve.EXPORT_AAF`, valid `exportSubtype` values are `resolve.EXPORT_AAF_NEW` and `resolve.EXPORT_AAF_EXISTING`.
+
+When `exportType` is `resolve.EXPORT_EDL`, valid `exportSubtype` values are `resolve.EXPORT_CDL`, `resolve.EXPORT_SDL`, `resolve.EXPORT_MISSING_CLIPS`, and `resolve.EXPORT_NONE`.
+
+Note: Replace `'resolve.'` when using the constants above if a different Resolve class instance name is used.
+
 
 Unsupported exportType types
 ---------------------------------
 Starting with DaVinci Resolve 18.1, the following export types are not supported:
-    - resolve.EXPORT_FCPXML_1_3
-    - resolve.EXPORT_FCPXML_1_4
-    - resolve.EXPORT_FCPXML_1_5
-    - resolve.EXPORT_FCPXML_1_6
-    - resolve.EXPORT_FCPXML_1_7
+- `resolve.EXPORT_FCPXML_1_3`
+- `resolve.EXPORT_FCPXML_1_4`
+- `resolve.EXPORT_FCPXML_1_5`
+- `resolve.EXPORT_FCPXML_1_6`
+- `resolve.EXPORT_FCPXML_1_7`
 
 
 Looking up Timeline item properties
 -----------------------------------
-This section covers additional notes for the function "TimelineItem:SetProperty" and "TimelineItem:GetProperty". These functions are used to get and set properties mentioned.
+This section covers additional notes for the function `TimelineItem:SetProperty` and `TimelineItem:GetProperty`. These functions are used to get and set properties mentioned.
 
 The supported keys with their accepted values are:
-  "Pan" : floating point values from -4.0*width to 4.0*width
-  "Tilt" : floating point values from -4.0*height to 4.0*height
-  "ZoomX" : floating point values from 0.0 to 100.0
-  "ZoomY" : floating point values from 0.0 to 100.0
-  "ZoomGang" : a boolean value
-  "RotationAngle" : floating point values from -360.0 to 360.0
-  "AnchorPointX" : floating point values from -4.0*width to 4.0*width
-  "AnchorPointY" : floating point values from -4.0*height to 4.0*height
-  "Pitch" : floating point values from -1.5 to 1.5
-  "Yaw" : floating point values from -1.5 to 1.5
-  "FlipX" : boolean value for flipping horizontally
-  "FlipY" : boolean value for flipping vertically
-  "CropLeft" : floating point values from 0.0 to width
-  "CropRight" : floating point values from 0.0 to width
-  "CropTop" : floating point values from 0.0 to height
-  "CropBottom" : floating point values from 0.0 to height
-  "CropSoftness" : floating point values from -100.0 to 100.0
-  "CropRetain" : boolean value for "Retain Image Position" checkbox
-  "DynamicZoomEase" : A value from the following constants
-     - DYNAMIC_ZOOM_EASE_LINEAR = 0
-     - DYNAMIC_ZOOM_EASE_IN
-     - DYNAMIC_ZOOM_EASE_OUT
-     - DYNAMIC_ZOOM_EASE_IN_AND_OUT
-  "CompositeMode" : A value from the following constants
-     - COMPOSITE_NORMAL = 0
-     - COMPOSITE_ADD
-     - COMPOSITE_SUBTRACT
-     - COMPOSITE_DIFF
-     - COMPOSITE_MULTIPLY
-     - COMPOSITE_SCREEN
-     - COMPOSITE_OVERLAY
-     - COMPOSITE_HARDLIGHT
-     - COMPOSITE_SOFTLIGHT
-     - COMPOSITE_DARKEN
-     - COMPOSITE_LIGHTEN
-     - COMPOSITE_COLOR_DODGE
-     - COMPOSITE_COLOR_BURN
-     - COMPOSITE_EXCLUSION
-     - COMPOSITE_HUE
-     - COMPOSITE_SATURATE
-     - COMPOSITE_COLORIZE
-     - COMPOSITE_LUMA_MASK
-     - COMPOSITE_DIVIDE
-     - COMPOSITE_LINEAR_DODGE
-     - COMPOSITE_LINEAR_BURN
-     - COMPOSITE_LINEAR_LIGHT
-     - COMPOSITE_VIVID_LIGHT
-     - COMPOSITE_PIN_LIGHT
-     - COMPOSITE_HARD_MIX
-     - COMPOSITE_LIGHTER_COLOR
-     - COMPOSITE_DARKER_COLOR
-     - COMPOSITE_FOREGROUND
-     - COMPOSITE_ALPHA
-     - COMPOSITE_INVERTED_ALPHA
-     - COMPOSITE_LUM
-     - COMPOSITE_INVERTED_LUM
-  "Opacity" : floating point value from 0.0 to 100.0
-  "Distortion" : floating point value from -1.0 to 1.0
-  "RetimeProcess" : A value from the following constants
-     - RETIME_USE_PROJECT = 0
-     - RETIME_NEAREST
-     - RETIME_FRAME_BLEND
-     - RETIME_OPTICAL_FLOW
-  "MotionEstimation" : A value from the following constants
-     - MOTION_EST_USE_PROJECT = 0
-     - MOTION_EST_STANDARD_FASTER
-     - MOTION_EST_STANDARD_BETTER
-     - MOTION_EST_ENHANCED_FASTER
-     - MOTION_EST_ENHANCED_BETTER
-     - MOTION_EST_SPEED_WARP_BETTER
-     - MOTION_EST_SPEED_WARP_FASTER
-  "Scaling" : A value from the following constants
-     - SCALE_USE_PROJECT = 0
-     - SCALE_CROP
-     - SCALE_FIT
-     - SCALE_FILL
-     - SCALE_STRETCH
-  "ResizeFilter" : A value from the following constants
-     - RESIZE_FILTER_USE_PROJECT = 0
-     - RESIZE_FILTER_SHARPER
-     - RESIZE_FILTER_SMOOTHER
-     - RESIZE_FILTER_BICUBIC
-     - RESIZE_FILTER_BILINEAR
-     - RESIZE_FILTER_BESSEL
-     - RESIZE_FILTER_BOX
-     - RESIZE_FILTER_CATMULL_ROM
-     - RESIZE_FILTER_CUBIC
-     - RESIZE_FILTER_GAUSSIAN
-     - RESIZE_FILTER_LANCZOS
-     - RESIZE_FILTER_MITCHELL
-     - RESIZE_FILTER_NEAREST_NEIGHBOR
-     - RESIZE_FILTER_QUADRATIC
-     - RESIZE_FILTER_SINC
-     - RESIZE_FILTER_LINEAR
+- `Pan`: floating point values from `-4.0*width` to `4.0*width`
+- `Tilt`: floating point values from `-4.0*height` to `4.0*height`
+- `ZoomX`: floating point values from `0.0` to `100.0`
+- `ZoomY`: floating point values from `0.0` to `100.0`
+- `ZoomGang`: a boolean value
+- `RotationAngle`: floating point values from `-360.0` to `360.0`
+- `AnchorPointX`: floating point values from `-4.0*width` to `4.0*width`
+- `AnchorPointY`: floating point values from `-4.0*height` to `4.0*height`
+- `Pitch`: floating point values from `-1.5` to `1.5`
+- `Yaw`: floating point values from `-1.5` to `1.5`
+- `FlipX`: boolean value for flipping horizontally
+- `FlipY`: boolean value for flipping vertically
+- `CropLeft`: floating point values from `0.0` to `width`
+- `CropRight`: floating point values from `0.0` to `width`
+- `CropTop`: floating point values from `0.0` to `height`
+- `CropBottom`: floating point values from `0.0` to `height`
+- `CropSoftness`: floating point values from `-100.0` to `100.0`
+- `CropRetain`: boolean value for "Retain Image Position" checkbox
+- `DynamicZoomEase`: A value from the following constants:
+  - `DYNAMIC_ZOOM_EASE_LINEAR = 0`
+  - `DYNAMIC_ZOOM_EASE_IN`
+  - `DYNAMIC_ZOOM_EASE_OUT`
+  - `DYNAMIC_ZOOM_EASE_IN_AND_OUT`
+- `CompositeMode`: A value from the following constants:
+  - `COMPOSITE_NORMAL = 0`
+  - `COMPOSITE_ADD`
+  - `COMPOSITE_SUBTRACT`
+  - `COMPOSITE_DIFF`
+  - `COMPOSITE_MULTIPLY`
+  - `COMPOSITE_SCREEN`
+  - `COMPOSITE_OVERLAY`
+  - `COMPOSITE_HARDLIGHT`
+  - `COMPOSITE_SOFTLIGHT`
+  - `COMPOSITE_DARKEN`
+  - `COMPOSITE_LIGHTEN`
+  - `COMPOSITE_COLOR_DODGE`
+  - `COMPOSITE_COLOR_BURN`
+  - `COMPOSITE_EXCLUSION`
+  - `COMPOSITE_HUE`
+  - `COMPOSITE_SATURATE`
+  - `COMPOSITE_COLORIZE`
+  - `COMPOSITE_LUMA_MASK`
+  - `COMPOSITE_DIVIDE`
+  - `COMPOSITE_LINEAR_DODGE`
+  - `COMPOSITE_LINEAR_BURN`
+  - `COMPOSITE_LINEAR_LIGHT`
+  - `COMPOSITE_VIVID_LIGHT`
+  - `COMPOSITE_PIN_LIGHT`
+  - `COMPOSITE_HARD_MIX`
+  - `COMPOSITE_LIGHTER_COLOR`
+  - `COMPOSITE_DARKER_COLOR`
+  - `COMPOSITE_FOREGROUND`
+  - `COMPOSITE_ALPHA`
+  - `COMPOSITE_INVERTED_ALPHA`
+  - `COMPOSITE_LUM`
+  - `COMPOSITE_INVERTED_LUM`
+- `Opacity`: floating point value from `0.0` to `100.0`
+- `Distortion`: floating point value from `-1.0` to `1.0`
+- `RetimeProcess`: A value from the following constants:
+  - `RETIME_USE_PROJECT = 0`
+  - `RETIME_NEAREST`
+  - `RETIME_FRAME_BLEND`
+  - `RETIME_OPTICAL_FLOW`
+- `MotionEstimation`: A value from the following constants:
+  - `MOTION_EST_USE_PROJECT = 0`
+  - `MOTION_EST_STANDARD_FASTER`
+  - `MOTION_EST_STANDARD_BETTER`
+  - `MOTION_EST_ENHANCED_FASTER`
+  - `MOTION_EST_ENHANCED_BETTER`
+  - `MOTION_EST_SPEED_WARP_BETTER`
+  - `MOTION_EST_SPEED_WARP_FASTER`
+- `Scaling`: A value from the following constants:
+  - `SCALE_USE_PROJECT = 0`
+  - `SCALE_CROP`
+  - `SCALE_FIT`
+  - `SCALE_FILL`
+  - `SCALE_STRETCH`
+- `ResizeFilter`: A value from the following constants:
+  - `RESIZE_FILTER_USE_PROJECT = 0`
+  - `RESIZE_FILTER_SHARPER`
+  - `RESIZE_FILTER_SMOOTHER`
+  - `RESIZE_FILTER_BICUBIC`
+  - `RESIZE_FILTER_BILINEAR`
+  - `RESIZE_FILTER_BESSEL`
+  - `RESIZE_FILTER_BOX`
+  - `RESIZE_FILTER_CATMULL_ROM`
+  - `RESIZE_FILTER_CUBIC`
+  - `RESIZE_FILTER_GAUSSIAN`
+  - `RESIZE_FILTER_LANCZOS`
+  - `RESIZE_FILTER_MITCHELL`
+  - `RESIZE_FILTER_NEAREST_NEIGHBOR`
+  - `RESIZE_FILTER_QUADRATIC`
+  - `RESIZE_FILTER_SINC`
+  - `RESIZE_FILTER_LINEAR`
 Values beyond the range will be clipped
 width and height are same as the UI max limits
 
@@ -869,13 +879,13 @@ Getting the values for the keys that uses constants will return the number which
 
 ExportLUT notes
 ---------------
-The following section covers additional notes for TimelineItem.ExportLUT(exportType, path).
+The following section covers additional notes for `TimelineItem.ExportLUT(exportType, path)`.
 
-Supported values for 'exportType' (enum) are:
-    - resolve.EXPORT_LUT_17PTCUBE
-    - resolve.EXPORT_LUT_33PTCUBE
-    - resolve.EXPORT_LUT_65PTCUBE
-    - resolve.EXPORT_LUT_PANASONICVLUT
+Supported values for `exportType` (enum) are:
+    - `resolve.EXPORT_LUT_17PTCUBE`
+    - `resolve.EXPORT_LUT_33PTCUBE`
+    - `resolve.EXPORT_LUT_65PTCUBE`
+    - `resolve.EXPORT_LUT_PANASONICVLUT`
 
 Unsupported Resolve API Functions
 ---------------------------------
